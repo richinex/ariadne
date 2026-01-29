@@ -30,10 +30,12 @@ jobs:
 
             Focus on: cli/**/*.go
             Provide specific file locations and line numbers for any findings.
-          command: react-run
+          command: rlm
           provider: deepseek
           api_key: ${{ secrets.DEEPSEEK_API_KEY }}
           max_iter: 25
+          depth: 3
+          timeout: 180
           verbose: false
 
       - name: Create security report
