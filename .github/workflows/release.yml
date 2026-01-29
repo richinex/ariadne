@@ -54,7 +54,7 @@ jobs:
             with:
               task: "Navigate your codebase and analyze complexity"
               provider: openai
-              api-key: \${{ secrets.OPENAI_API_KEY }}
+              api_key: \${{ secrets.OPENAI_API_KEY }}
           \`\`\`
 
           See [README-ACTION.md](README-ACTION.md) for full documentation.

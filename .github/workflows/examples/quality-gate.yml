@@ -34,7 +34,7 @@ jobs:
 
             Flag issues as: CRITICAL, HIGH, MEDIUM, or LOW
           provider: openai
-          api-key: ${{ secrets.OPENAI_API_KEY }}
+          api_key: ${{ secrets.OPENAI_API_KEY }}
           max-iterations: 15
           verbose: true
 
@@ -95,7 +95,7 @@ jobs:
 
             Provide specific recommendations.
           provider: anthropic
-          api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           max-iterations: 12
 
       - name: Comment quality report

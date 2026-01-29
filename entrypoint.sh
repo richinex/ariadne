@@ -28,7 +28,7 @@ if [ -z "$PROVIDER" ]; then
 fi
 
 if [ -z "$API_KEY" ]; then
-    echo "Error: 'api-key' input is required"
+    echo "Error: 'api_key' input is required"
     exit 1
 fi
 

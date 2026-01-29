@@ -42,7 +42,7 @@ jobs:
 
             Provide specific, actionable feedback.
           provider: anthropic
-          api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           max-iterations: 20
           verbose: true
 
