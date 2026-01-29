@@ -33,9 +33,9 @@ jobs:
           command: rlm
           provider: deepseek
           api_key: ${{ secrets.DEEPSEEK_API_KEY }}
-          depth: 4
-          timeout: 120
-          max-iter: 20
+          depth: 5
+          timeout: 180
+          max-iter: 50
           verbose: false
 
       - name: Create security report

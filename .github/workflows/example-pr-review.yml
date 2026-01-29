@@ -1,8 +1,7 @@
-name: AI PR Review
+name: AI PR Review (Disabled)
 
 on:
-  pull_request:
-    types: [opened, synchronize]
+  workflow_dispatch:
 
 jobs:
   review:
