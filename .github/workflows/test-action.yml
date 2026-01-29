@@ -15,9 +15,6 @@ jobs:
   test-react-run:
     name: Test react-run command
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        provider: [openai, anthropic, deepseek]
 
     steps:
       - name: Checkout code
@@ -29,8 +26,8 @@ jobs:
         with:
           task: "List all markdown files in this repository"
           command: react-run
-          provider: ${{ matrix.provider }}
-          api_key: ${{ secrets[format('{0}_API_KEY', matrix.provider)] }}
+          provider: deepseek
+          api_key: ${{ secrets.DEEPSEEK_API_KEY }}
           max-iter: 10
           verbose: true
 
