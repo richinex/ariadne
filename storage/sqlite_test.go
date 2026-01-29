@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/richinex/davingo/llm"
+	"github.com/richinex/ariadne/llm"
 )
 
 func TestSqliteStorageSaveAndLoad(t *testing.T) {

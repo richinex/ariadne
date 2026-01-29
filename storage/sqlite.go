@@ -16,7 +16,7 @@ import (
 	"time"
 
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/richinex/davingo/llm"
+	"github.com/richinex/ariadne/llm"
 )
 
 // SqliteStorage implements ConversationStorage and MemoryStorage using SQLite.

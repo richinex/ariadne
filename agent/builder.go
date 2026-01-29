@@ -10,7 +10,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/richinex/davingo/tools"
+	"github.com/richinex/ariadne/tools"
 )
 
 // Builder provides fluent configuration for creating agents.

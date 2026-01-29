@@ -20,7 +20,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/richinex/davingo/llm"
+	"github.com/richinex/ariadne/llm"
 )
 
 // SpawnMetrics tracks RLM execution statistics.

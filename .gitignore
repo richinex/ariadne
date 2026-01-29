@@ -4,7 +4,7 @@
 *.dll
 *.so
 *.dylib
-davingo
+ariadne
 *.test
 *.out
 
@@ -60,7 +60,7 @@ Desktop.ini
 
 # Project-specific ignores
 # Runtime directory
-.davingo/
+.ariadne/
 *.db
 
 # Personal documentation and notes

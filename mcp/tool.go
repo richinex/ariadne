@@ -13,7 +13,7 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/richinex/davingo/tools"
+	"github.com/richinex/ariadne/tools"
 )
 
 // ToolManager manages a set of MCP tools sharing a single client.

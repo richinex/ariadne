@@ -9,7 +9,7 @@ package agent
 import (
 	"encoding/json"
 
-	"github.com/richinex/davingo/tools"
+	"github.com/richinex/ariadne/tools"
 )
 
 // Config holds agent configuration.

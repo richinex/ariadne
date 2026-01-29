@@ -1,4 +1,4 @@
-# Davingo
+# Ariadne
 
 A CLI tool for running LLM agents with DSA (Data Structure & Algorithm) powered bounded context. Translated from Reagent (Rust) to idiomatic Go.
 
@@ -9,15 +9,15 @@ Implements two execution patterns:
 ## Installation
 
 ```bash
-go install github.com/richinex/davingo/cmd/davingo@latest
+go install github.com/richinex/ariadne/cmd/ariadne@latest
 ```
 
 Or build from source:
 
 ```bash
-git clone https://github.com/richinex/davingo.git
-cd davingo
-go build -o davingo ./cmd/davingo
+git clone https://github.com/richinex/ariadne.git
+cd ariadne
+go build -o ariadne ./cmd/ariadne
 ```
 
 ## Configuration
@@ -38,8 +38,8 @@ Or create a `.env` file in your working directory.
 ### react run - Execute a single task with DSA tools
 
 ```bash
-davingo --provider openai react run "summarize this file"
-davingo --provider deepseek react run "analyze all Go files in this project"
+ariadne --provider openai react run "summarize this file"
+ariadne --provider deepseek react run "analyze all Go files in this project"
 ```
 
 **Flags:**
@@ -49,26 +49,26 @@ davingo --provider deepseek react run "analyze all Go files in this project"
 ### react chat - Interactive chat session with DSA tools
 
 ```bash
-davingo --provider openai react chat
-davingo --provider anthropic react chat --session my-session
+ariadne --provider openai react chat
+ariadne --provider anthropic react chat --session my-session
 ```
 
 **Flags:**
 - `--session` - Session ID for persistence
-- `--db` - Database path (default: `.davingo/davingo.db`)
+- `--db` - Database path (default: `.ariadne/ariadne.db`)
 - `--mcp` - MCP server command (repeatable)
 - `--mcp-config` - Path to MCP config file
 
 ### react orchestrate - Multi-agent orchestration with DSA tools
 
 ```bash
-davingo --provider openai react orchestrate "analyze this codebase" --agent file --agent shell
+ariadne --provider openai react orchestrate "analyze this codebase" --agent file --agent shell
 ```
 
 **Flags:**
 - `-a, --agent` - Agents to use (can specify multiple)
 - `--session` - Session ID for persistence
-- `--db` - Database path (default: `.davingo/davingo.db`)
+- `--db` - Database path (default: `.ariadne/ariadne.db`)
 - `--mcp` - MCP server command (repeatable)
 - `--mcp-config` - Path to MCP config file
 
@@ -77,9 +77,9 @@ davingo --provider openai react orchestrate "analyze this codebase" --agent file
 Execute tasks using recursive sub-agent spawning. Sub-agents can spawn their own sub-agents to any depth. Unlike ReAct commands, RLM is stateless with no session persistence.
 
 ```bash
-davingo --provider deepseek rlm "analyze all Go files and summarize each"
-davingo --provider openai rlm "list files and explain what each does" --depth 5
-davingo --provider anthropic rlm "complex multi-step task" --verbose
+ariadne --provider deepseek rlm "analyze all Go files and summarize each"
+ariadne --provider openai rlm "list files and explain what each does" --depth 5
+ariadne --provider anthropic rlm "complex multi-step task" --verbose
 ```
 
 **Flags:**
@@ -100,8 +100,8 @@ davingo --provider anthropic rlm "complex multi-step task" --verbose
 ### tools - List available tools
 
 ```bash
-davingo tools
-davingo tools --verbose  # Show parameters
+ariadne tools
+ariadne tools --verbose  # Show parameters
 ```
 
 ## Global Flags
@@ -147,10 +147,10 @@ davingo tools --verbose  # Show parameters
 ## Architecture
 
 ```
-davingo/
+ariadne/
 ├── agent/          # ReAct agent implementation
 ├── cli/            # Command-line interface (ReAct and RLM)
-├── cmd/davingo/    # Main entry point (Cobra CLI)
+├── cmd/ariadne/    # Main entry point (Cobra CLI)
 ├── config/         # Configuration management
 ├── internal/dsa/   # Data structures (Radix tree, SuffixArray)
 ├── llm/            # LLM provider implementations (OpenAI, Anthropic, DeepSeek, Gemini)
@@ -163,7 +163,7 @@ davingo/
 
 ## DSA-Powered Storage
 
-Davingo uses advanced data structures to provide **bounded context** - preventing token overflow when working with large files.
+Ariadne uses advanced data structures to provide **bounded context** - preventing token overflow when working with large files.
 
 **Storage Architecture:**
 - **Radix Tree** (go-radix): O(k) prefix lookup for file paths
@@ -183,22 +183,22 @@ This enables analyzing dozens of files without bloating LLM context.
 
 ```bash
 # Simple file analysis with ReAct
-davingo -p openai react run "what does main.go do?"
+ariadne -p openai react run "what does main.go do?"
 
 # Multi-file analysis with DSA tools
-davingo -p deepseek react run "analyze all Go files in the project" --verbose
+ariadne -p deepseek react run "analyze all Go files in the project" --verbose
 
 # Multi-file analysis with RLM (recursive spawning)
-davingo -p deepseek rlm "analyze the tools/ directory and summarize each file" --verbose
+ariadne -p deepseek rlm "analyze the tools/ directory and summarize each file" --verbose
 
 # Interactive coding session with persistence
-davingo -p anthropic react chat --session coding
+ariadne -p anthropic react chat --session coding
 
 # Complex orchestration across multiple agents
-davingo -p openai react orchestrate "refactor this module" -a file -a shell
+ariadne -p openai react orchestrate "refactor this module" -a file -a shell
 
 # With MCP servers (Model Context Protocol)
-davingo -p openai react run "task" --mcp "npx -y @modelcontextprotocol/server-filesystem ."
+ariadne -p openai react run "task" --mcp "npx -y @modelcontextprotocol/server-filesystem ."
 ```
 
 ## ReAct vs RLM: Which to Use?
@@ -239,19 +239,19 @@ Both patterns use **DSA-powered tools** (Suffix Array, Trie) for bounded context
 
 ## MCP Server Support
 
-Davingo supports [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) servers for dynamic tool discovery:
+Ariadne supports [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) servers for dynamic tool discovery:
 
 ```bash
 # Single MCP server
-davingo -p openai react run "task" --mcp "npx -y @modelcontextprotocol/server-filesystem ."
+ariadne -p openai react run "task" --mcp "npx -y @modelcontextprotocol/server-filesystem ."
 
 # Multiple MCP servers
-davingo -p openai react run "task" \
+ariadne -p openai react run "task" \
   --mcp "npx -y @modelcontextprotocol/server-filesystem ." \
   --mcp "npx -y @modelcontextprotocol/server-memory"
 
 # Or use MCP config file (Anthropic format)
-davingo -p openai react run "task" --mcp-config ~/.config/claude/mcp.json
+ariadne -p openai react run "task" --mcp-config ~/.config/claude/mcp.json
 ```
 
 **Tested MCP servers:**

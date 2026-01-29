@@ -4,8 +4,8 @@
 package orchestration
 
 import (
-	"github.com/richinex/davingo/model"
-	"github.com/richinex/davingo/llm"
+	"github.com/richinex/ariadne/model"
+	"github.com/richinex/ariadne/llm"
 )
 
 // OutputSchema defines the schema for structured agent outputs.

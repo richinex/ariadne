@@ -13,11 +13,11 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"github.com/richinex/davingo/agent"
-	"github.com/richinex/davingo/config"
-	"github.com/richinex/davingo/llm"
-	"github.com/richinex/davingo/orchestration"
-	"github.com/richinex/davingo/tools"
+	"github.com/richinex/ariadne/agent"
+	"github.com/richinex/ariadne/config"
+	"github.com/richinex/ariadne/llm"
+	"github.com/richinex/ariadne/orchestration"
+	"github.com/richinex/ariadne/tools"
 )
 
 func main() {

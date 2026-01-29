@@ -11,7 +11,7 @@ import (
 	"context"
 	"sync"
 
-	"github.com/richinex/davingo/llm"
+	"github.com/richinex/ariadne/llm"
 )
 
 // InMemoryStorage implements ConversationStorage using an in-memory map.

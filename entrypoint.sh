@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # GitHub Actions entrypoint for Ariadne
-# Maps INPUT_* environment variables to davingo CLI commands
+# Maps INPUT_* environment variables to ariadne CLI commands
 
 # Required inputs
 TASK="${INPUT_TASK}"
@@ -52,7 +52,7 @@ case "$PROVIDER" in
         ;;
 esac
 
-# Build davingo command as array (prevents shell injection)
+# Build ariadne command as array (prevents shell injection)
 CMD_ARGS=(
     "$COMMAND"
     "--provider" "$PROVIDER"
@@ -74,14 +74,14 @@ CMD_ARGS+=("$TASK")
 
 # Output the command for debugging (verbose mode)
 if [ "$VERBOSE" = "true" ]; then
-    echo "Running: davingo ${CMD_ARGS[*]}"
+    echo "Running: ariadne ${CMD_ARGS[*]}"
 fi
 
-# Execute davingo and capture output (safe from shell injection)
+# Execute ariadne and capture output (safe from shell injection)
 OUTPUT_FILE=$(mktemp -t ariadne-output.XXXXXXXXXX)
 EXIT_CODE=0
 
-davingo "${CMD_ARGS[@]}" | tee "$OUTPUT_FILE" || EXIT_CODE=$?
+ariadne "${CMD_ARGS[@]}" | tee "$OUTPUT_FILE" || EXIT_CODE=$?
 
 # Set GitHub Actions outputs (guard against missing GITHUB_OUTPUT in local testing)
 if [ -n "${GITHUB_OUTPUT:-}" ]; then

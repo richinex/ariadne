@@ -6,8 +6,8 @@ package agent
 import (
 	"encoding/json"
 
-	"github.com/richinex/davingo/model"
-	"github.com/richinex/davingo/llm"
+	"github.com/richinex/ariadne/model"
+	"github.com/richinex/ariadne/llm"
 )
 
 // Decision represents a decision made by the agent's LLM.

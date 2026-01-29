@@ -1,4 +1,4 @@
-module github.com/richinex/davingo
+module github.com/richinex/ariadne
 
 go 1.24
 

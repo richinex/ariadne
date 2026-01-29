@@ -18,8 +18,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/richinex/davingo/llm"
-	"github.com/richinex/davingo/tools"
+	"github.com/richinex/ariadne/llm"
+	"github.com/richinex/ariadne/tools"
 )
 
 func main() {

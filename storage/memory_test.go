@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/richinex/davingo/llm"
+	"github.com/richinex/ariadne/llm"
 )
 
 func TestInMemoryStorageSaveAndLoad(t *testing.T) {

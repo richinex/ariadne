@@ -106,7 +106,7 @@ func (c *Client) initialize(ctx context.Context) error {
 		"protocolVersion": "2024-11-05",
 		"capabilities":    map[string]interface{}{},
 		"clientInfo": map[string]interface{}{
-			"name":    "davingo",
+			"name":    "ariadne",
 			"version": "0.1.0",
 		},
 	}

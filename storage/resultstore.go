@@ -16,8 +16,8 @@ import (
 	"time"
 
 	"github.com/cespare/xxhash/v2"
-	"github.com/richinex/davingo/model"
-	"github.com/richinex/davingo/internal/dsa"
+	"github.com/richinex/ariadne/model"
+	"github.com/richinex/ariadne/internal/dsa"
 )
 
 // ResultStoreInterface is the interface for result storage operations.

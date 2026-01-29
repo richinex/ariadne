@@ -1,4 +1,4 @@
-# Davingo Makefile
+# Ariadne Makefile
 # Run 'make help' to see available targets
 
 .PHONY: all build test lint lint-nil clean install-tools help
@@ -8,13 +8,13 @@ all: build
 
 # Build the Go binary
 build:
-	@echo "Building davingo..."
-	@go build -o davingo ./cmd/davingo
+	@echo "Building ariadne..."
+	@go build -o ariadne ./cmd/ariadne
 
 # Build with race detector (for development)
 build-race:
-	@echo "Building davingo with race detector..."
-	@go build -race -o davingo ./cmd/davingo
+	@echo "Building ariadne with race detector..."
+	@go build -race -o ariadne ./cmd/ariadne
 
 # Run tests
 test:
@@ -117,15 +117,15 @@ install-tools:
 # Clean build artifacts
 clean:
 	@echo "Cleaning..."
-	@rm -f davingo
+	@rm -f ariadne
 	@rm -rf build
 	@rm -f coverage.out coverage.html
-	@rm -rf .davingo
+	@rm -rf .ariadne
 
 # Clean including database
 clean-all: clean
 	@echo "Deep cleaning (including database)..."
-	@rm -rf .davingo
+	@rm -rf .ariadne
 
 # Generate (if you have go generate directives)
 generate:
@@ -152,17 +152,17 @@ deps-tidy:
 release:
 	@echo "Building release binary..."
 	@mkdir -p build
-	@go build -ldflags "-s -w" -trimpath -o build/davingo ./cmd/davingo
-	@echo "Release binary: build/davingo"
+	@go build -ldflags "-s -w" -trimpath -o build/ariadne ./cmd/ariadne
+	@echo "Release binary: build/ariadne"
 
 # Cross-compile for multiple platforms
 cross-build:
 	@echo "Cross-compiling..."
 	@mkdir -p build
-	@GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o build/davingo-linux-amd64 ./cmd/davingo
-	@GOOS=linux GOARCH=arm64 go build -ldflags "-s -w" -o build/davingo-linux-arm64 ./cmd/davingo
-	@GOOS=darwin GOARCH=amd64 go build -ldflags "-s -w" -o build/davingo-darwin-amd64 ./cmd/davingo
-	@GOOS=darwin GOARCH=arm64 go build -ldflags "-s -w" -o build/davingo-darwin-arm64 ./cmd/davingo
+	@GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o build/ariadne-linux-amd64 ./cmd/ariadne
+	@GOOS=linux GOARCH=arm64 go build -ldflags "-s -w" -o build/ariadne-linux-arm64 ./cmd/ariadne
+	@GOOS=darwin GOARCH=amd64 go build -ldflags "-s -w" -o build/ariadne-darwin-amd64 ./cmd/ariadne
+	@GOOS=darwin GOARCH=arm64 go build -ldflags "-s -w" -o build/ariadne-darwin-arm64 ./cmd/ariadne
 	@echo "Cross-compilation complete"
 
 # Development setup
@@ -184,7 +184,7 @@ example-resultstore: build
 
 # Help
 help:
-	@echo "Davingo Makefile"
+	@echo "Ariadne Makefile"
 	@echo ""
 	@echo "Usage: make [target]"
 	@echo ""
@@ -220,7 +220,7 @@ help:
 	@echo ""
 	@echo "Clean targets:"
 	@echo "  clean          Remove build artifacts"
-	@echo "  clean-all      Deep clean (includes .davingo database)"
+	@echo "  clean-all      Deep clean (includes .ariadne database)"
 	@echo ""
 	@echo "Other targets:"
 	@echo "  ci             Run CI checks (lint, test, build)"

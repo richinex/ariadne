@@ -28,7 +28,7 @@ RUN go build \
     -ldflags="-s -w" \
     -trimpath \
     -buildvcs=false \
-    -o davingo \
+    -o ariadne \
     .
 
 # Stage 2: Runtime image with minimal dependencies
@@ -41,7 +41,7 @@ RUN apk add --no-cache \
     bash
 
 # Copy binary from builder
-COPY --from=builder /build/davingo /usr/local/bin/davingo
+COPY --from=builder /build/ariadne /usr/local/bin/ariadne
 
 # Copy entrypoint script
 COPY --chmod=755 entrypoint.sh /entrypoint.sh

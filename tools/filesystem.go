@@ -14,7 +14,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/richinex/davingo/model"
+	"github.com/richinex/ariadne/model"
 )
 
 // ReadFileTool reads file contents.

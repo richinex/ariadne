@@ -7,10 +7,10 @@
 package cli
 
 import (
-	"github.com/richinex/davingo/agent"
-	"github.com/richinex/davingo/llm"
-	"github.com/richinex/davingo/storage"
-	"github.com/richinex/davingo/tools"
+	"github.com/richinex/ariadne/agent"
+	"github.com/richinex/ariadne/llm"
+	"github.com/richinex/ariadne/storage"
+	"github.com/richinex/ariadne/tools"
 )
 
 // AgentType represents available agent types.

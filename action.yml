@@ -46,10 +46,10 @@ inputs:
 
 outputs:
   result:
-    description: 'Output from the davingo agent'
+    description: 'Output from the ariadne agent'
 
   exit-code:
-    description: 'Exit code from davingo execution (0 = success)'
+    description: 'Exit code from ariadne execution (0 = success)'
 
 runs:
   using: 'docker'

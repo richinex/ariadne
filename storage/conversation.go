@@ -10,7 +10,7 @@ package storage
 import (
 	"context"
 
-	"github.com/richinex/davingo/llm"
+	"github.com/richinex/ariadne/llm"
 )
 
 // ConversationStorage defines the interface for storing conversation history.

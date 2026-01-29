@@ -2,12 +2,12 @@ Ideas
 These are excellent references! The GitHub Actions chapter covers workflow automation, CI/CD pipelines, and creating custom Go actions. The
   OpenTelemetry chapter covers observability - logging, distributed tracing, metrics, and alerting.
 
-  Here are some ideas combining davingo's agent framework with these DevOps capabilities:
+  Here are some ideas combining ariadne's agent framework with these DevOps capabilities:
 
   ---
   1. Observability-Instrumented Agents
 
-  Instrument davingo itself with OpenTelemetry:
+  Instrument ariadne itself with OpenTelemetry:
   - Each ReAct iteration becomes a span in a distributed trace
   - Tool executions are child spans with duration/success metrics
   - Multi-agent orchestration shows as a trace tree across agents
@@ -52,7 +52,7 @@ These are excellent references! The GitHub Actions chapter covers workflow autom
          Generating changelog... ✓
          Building linux/arm64, darwin/amd64... ✓
          Creating release... ✓
-         Published: https://github.com/richinex/davingo/releases/v1.3.0
+         Published: https://github.com/richinex/ariadne/releases/v1.3.0
 
   ---
   4. CI/CD Debugger Agent
@@ -71,10 +71,10 @@ These are excellent references! The GitHub Actions chapter covers workflow autom
   }
 
   ---
-  5. Custom GitHub Action in Go (davingo-action)
+  5. Custom GitHub Action in Go (ariadne-action)
 
-  Package davingo as a reusable GitHub Action:
-  - uses: richinex/davingo-action@v1
+  Package ariadne as a reusable GitHub Action:
+  - uses: richinex/ariadne-action@v1
     with:
       task: "Review this PR for security issues"
       provider: openai
@@ -126,7 +126,7 @@ These are excellent references! The GitHub Actions chapter covers workflow autom
 
   I'd suggest starting with either:
   1. Observability instrumentation (adds immediate value, helps debug agents)
-  2. GitHub Action wrapper (makes davingo usable in any CI pipeline)
+  2. GitHub Action wrapper (makes ariadne usable in any CI pipeline)
   3. Incident response agent (high-impact DevOps use case)
 
   What catches your interest?

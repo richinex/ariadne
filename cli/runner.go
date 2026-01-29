@@ -15,14 +15,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/richinex/davingo/agent"
-	"github.com/richinex/davingo/model"
-	"github.com/richinex/davingo/config"
-	"github.com/richinex/davingo/llm"
-	"github.com/richinex/davingo/mcp"
-	"github.com/richinex/davingo/orchestration"
-	"github.com/richinex/davingo/storage"
-	"github.com/richinex/davingo/tools"
+	"github.com/richinex/ariadne/agent"
+	"github.com/richinex/ariadne/model"
+	"github.com/richinex/ariadne/config"
+	"github.com/richinex/ariadne/llm"
+	"github.com/richinex/ariadne/mcp"
+	"github.com/richinex/ariadne/orchestration"
+	"github.com/richinex/ariadne/storage"
+	"github.com/richinex/ariadne/tools"
 )
 
 // Options holds CLI execution options.
@@ -1203,7 +1203,7 @@ func ListTools(verbose bool) {
 // Helper functions
 
 // defaultDBPath is the unified database path for all storage.
-const defaultDBPath = ".davingo/davingo.db"
+const defaultDBPath = ".ariadne/ariadne.db"
 
 // loadMCPServers loads MCP server commands from config and merges with explicit list.
 func loadMCPServers(mcpServers []string, mcpConfigPath string, verbose bool) ([]string, error) {

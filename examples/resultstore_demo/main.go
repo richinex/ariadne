@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/richinex/davingo/storage"
+	"github.com/richinex/ariadne/storage"
 )
 
 func main() {

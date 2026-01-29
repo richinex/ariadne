@@ -19,11 +19,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/richinex/davingo/model"
-	jsonutil "github.com/richinex/davingo/internal/json"
-	"github.com/richinex/davingo/llm"
-	"github.com/richinex/davingo/storage"
-	"github.com/richinex/davingo/tools"
+	"github.com/richinex/ariadne/model"
+	jsonutil "github.com/richinex/ariadne/internal/json"
+	"github.com/richinex/ariadne/llm"
+	"github.com/richinex/ariadne/storage"
+	"github.com/richinex/ariadne/tools"
 )
 
 // Agent executes tasks using the ReAct pattern.

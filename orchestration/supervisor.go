@@ -19,11 +19,11 @@ import (
 	"os"
 	"strings"
 
-	"github.com/richinex/davingo/agent"
-	"github.com/richinex/davingo/model"
-	jsonutil "github.com/richinex/davingo/internal/json"
-	"github.com/richinex/davingo/llm"
-	"github.com/richinex/davingo/storage"
+	"github.com/richinex/ariadne/agent"
+	"github.com/richinex/ariadne/model"
+	jsonutil "github.com/richinex/ariadne/internal/json"
+	"github.com/richinex/ariadne/llm"
+	"github.com/richinex/ariadne/storage"
 )
 
 // SubGoalDeclaration is a sub-goal declared during task planning.
@@ -714,7 +714,7 @@ func (s *Supervisor) processAgentResult(ctx context.Context, agentName, subGoalI
 	}
 
 	// File path for direct access (e.g., with ripgrep or cat)
-	filePath := fmt.Sprintf(".davingo/results/%s", meta.ContentHash)
+	filePath := fmt.Sprintf(".ariadne/results/%s", meta.ContentHash)
 
 	// Build compact reference with file path for tool access
 	ref := storedResultRef{

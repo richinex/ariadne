@@ -12,7 +12,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/richinex/davingo/storage"
+	"github.com/richinex/ariadne/storage"
 )
 
 // StoredFileContext tracks recently stored files for easy reference.

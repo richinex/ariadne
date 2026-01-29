@@ -1,4 +1,4 @@
-// Package main provides the davingo CLI entry point.
+// Package main provides the ariadne CLI entry point.
 package main
 
 import (
@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"github.com/richinex/davingo/cli"
+	"github.com/richinex/ariadne/cli"
 	"github.com/spf13/cobra"
 )
 
@@ -28,7 +28,7 @@ func main() {
 	}
 
 	rootCmd := &cobra.Command{
-		Use:   "davingo",
+		Use:   "ariadne",
 		Short: "LLM agents with DSA-powered bounded context",
 		Long: `A CLI tool for running LLM agents with DSA (Data Structure & Algorithm) powered tools.
 
@@ -126,7 +126,7 @@ func reactChatCmd() *cobra.Command {
 	}
 
 	cmd.Flags().StringVar(&sessionID, "session", "", "Session ID for conversation persistence")
-	cmd.Flags().StringVar(&dbPath, "db", ".davingo/davingo.db", "Database path for storage")
+	cmd.Flags().StringVar(&dbPath, "db", ".ariadne/ariadne.db", "Database path for storage")
 	cmd.Flags().StringArrayVar(&mcpServers, "mcp", nil, "MCP server command (repeatable)")
 	cmd.Flags().StringVar(&mcpConfigPath, "mcp-config", "", "Path to MCP config file")
 
@@ -157,7 +157,7 @@ func reactOrchestrateCmd() *cobra.Command {
 
 	cmd.Flags().StringSliceVarP(&agentNames, "agent", "a", nil, "Agent(s) to use (can specify multiple)")
 	cmd.Flags().StringVar(&sessionID, "session", "", "Session ID for memory persistence")
-	cmd.Flags().StringVar(&dbPath, "db", ".davingo/davingo.db", "Database path for storage")
+	cmd.Flags().StringVar(&dbPath, "db", ".ariadne/ariadne.db", "Database path for storage")
 	cmd.Flags().StringArrayVar(&mcpServers, "mcp", nil, "MCP server command (repeatable)")
 	cmd.Flags().StringVar(&mcpConfigPath, "mcp-config", "", "Path to MCP config file")
 
