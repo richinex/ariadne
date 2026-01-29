@@ -112,7 +112,7 @@ jobs:
       - name: Test provider ${{ matrix.provider }}
         uses: ./
         with:
-          task: "What is the main purpose of this repository based on the README?"
+          task: "List all .go files in the cli/ directory"
           provider: ${{ matrix.provider }}
           api_key: ${{ secrets[format('{0}_API_KEY', matrix.provider)] }}
           max_iter: 3
