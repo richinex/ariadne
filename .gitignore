@@ -75,6 +75,8 @@ progress.md
 
 # Claude Code session files
 .claude/
+CLAUDE.md
+claude.md
 
 # Test and temporary files
 testdata/
