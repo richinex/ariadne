@@ -687,8 +687,9 @@ OTHER:
 
 	// Run ReAct loop
 	for i := 0; i < opts.MaxIter; i++ {
+		// Silently stop on context cancellation - task may already be complete
 		if ctx.Err() != nil {
-			return ctx.Err()
+			break
 		}
 
 		if opts.Verbose {
