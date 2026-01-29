@@ -1,6 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
+# Enable verbose error tracing in GitHub Actions
+if [ "${GITHUB_ACTIONS:-}" = "true" ]; then
+    set -x
+fi
+
 # GitHub Actions entrypoint for Ariadne
 # Maps INPUT_* environment variables to ariadne CLI commands
 
