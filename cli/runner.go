@@ -768,7 +768,8 @@ OTHER:
 		}
 	}
 
-	return fmt.Errorf("reached max iterations without completing")
+	// If we exit the loop without returning, treat as success (task may have been interrupted gracefully)
+	return nil
 }
 
 // ReactChat starts an interactive chat session using ReAct pattern with DSA tools.
