@@ -542,8 +542,7 @@ OTHER:
 		}
 	}
 
-	// If we exit the loop without returning, treat as success (task may have been interrupted gracefully)
-	return nil
+	return fmt.Errorf("reached max iterations without completing")
 }
 
 // ReAct executes a task using the ReAct pattern with DSA tools for bounded context.
