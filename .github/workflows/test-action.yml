@@ -31,7 +31,7 @@ jobs:
           command: react-run
           provider: ${{ matrix.provider }}
           api_key: ${{ secrets[format('{0}_API_KEY', matrix.provider)] }}
-          max-iter: 15
+          max-iter: 10
           verbose: true
 
       - name: Check output
