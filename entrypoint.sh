@@ -56,7 +56,7 @@ esac
 CMD_ARGS=(
     "$COMMAND"
     "--provider" "$PROVIDER"
-    "--max-iterations" "$MAX_ITERATIONS"
+    "--max-iter" "$MAX_ITERATIONS"
 )
 
 # Add command-specific flags
