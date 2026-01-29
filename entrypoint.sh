@@ -5,9 +5,9 @@ set -euo pipefail
 # Maps INPUT_* environment variables to ariadne CLI commands
 
 # Required inputs
-TASK="${INPUT_TASK}"
-PROVIDER="${INPUT_PROVIDER}"
-API_KEY="${INPUT_API_KEY}"
+TASK="${INPUT_TASK:-}"
+PROVIDER="${INPUT_PROVIDER:-}"
+API_KEY="${INPUT_API_KEY:-}"
 
 # Optional inputs with defaults
 COMMAND="${INPUT_COMMAND:-react-run}"
