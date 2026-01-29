@@ -54,7 +54,7 @@ func (p *OpenAIProvider) ChatWithFormat(ctx context.Context, messages []ChatMess
 	req := openai.ChatCompletionRequest{
 		Model:       p.model,
 		Messages:    convertToOpenAIMessages(messages),
-		MaxTokens:   p.maxTokens,
+		MaxCompletionTokens:   p.maxTokens,
 		Temperature: p.temperature,
 	}
 
@@ -88,7 +88,7 @@ func (p *OpenAIProvider) ChatWithTools(ctx context.Context, messages []ChatMessa
 	req := openai.ChatCompletionRequest{
 		Model:       p.model,
 		Messages:    convertToOpenAIMessagesWithTools(messages),
-		MaxTokens:   p.maxTokens,
+		MaxCompletionTokens:   p.maxTokens,
 		Temperature: p.temperature,
 		Tools:       convertToOpenAITools(tools),
 	}
@@ -126,7 +126,7 @@ func (p *OpenAIProvider) StreamChat(ctx context.Context, messages []ChatMessage,
 	req := openai.ChatCompletionRequest{
 		Model:       p.model,
 		Messages:    convertToOpenAIMessages(messages),
-		MaxTokens:   p.maxTokens,
+		MaxCompletionTokens:   p.maxTokens,
 		Temperature: p.temperature,
 		Stream:      true,
 		StreamOptions: &openai.StreamOptions{

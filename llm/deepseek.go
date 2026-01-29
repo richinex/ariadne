@@ -59,7 +59,7 @@ func (p *DeepSeekProvider) ChatWithFormat(ctx context.Context, messages []ChatMe
 	req := openai.ChatCompletionRequest{
 		Model:       p.model,
 		Messages:    convertMessages(messages),
-		MaxTokens:   p.maxTokens,
+		MaxCompletionTokens:   p.maxTokens,
 		Temperature: p.temperature,
 	}
 
@@ -94,7 +94,7 @@ func (p *DeepSeekProvider) ChatWithTools(ctx context.Context, messages []ChatMes
 	req := openai.ChatCompletionRequest{
 		Model:       p.model,
 		Messages:    convertMessagesWithTools(messages),
-		MaxTokens:   p.maxTokens,
+		MaxCompletionTokens:   p.maxTokens,
 		Temperature: p.temperature,
 		Tools:       convertTools(tools),
 	}
@@ -131,7 +131,7 @@ func (p *DeepSeekProvider) StreamChat(ctx context.Context, messages []ChatMessag
 	req := openai.ChatCompletionRequest{
 		Model:       p.model,
 		Messages:    convertMessages(messages),
-		MaxTokens:   p.maxTokens,
+		MaxCompletionTokens:   p.maxTokens,
 		Temperature: p.temperature,
 		Stream:      true,
 		StreamOptions: &openai.StreamOptions{
