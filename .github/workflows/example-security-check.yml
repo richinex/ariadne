@@ -1,0 +1,66 @@
+name: Security Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  security-scan:
+    name: AI Security Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Scan for security issues
+        id: security
+        uses: richinex/ariadne@v1
+        with:
+          task: |
+            Perform a security analysis of this codebase:
+            1. Check for SQL injection vulnerabilities
+            2. Look for hardcoded secrets or credentials
+            3. Identify insecure API usage patterns
+            4. Check for command injection risks
+            5. Review error handling for information leakage
+
+            Focus on Go files and shell scripts.
+            Provide specific file locations and line numbers for any findings.
+          command: react-run
+          provider: deepseek
+          api_key: ${{ secrets.DEEPSEEK_API_KEY }}
+          max-iter: 25
+          verbose: false
+
+      - name: Create security report
+        run: |
+          cat > security-report.md << 'EOF'
+          # Security Analysis Report
+
+          **Date:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          **Commit:** ${{ github.sha }}
+
+          ## Findings
+
+          ${{ steps.security.outputs.result }}
+
+          ## Recommendations
+
+          - Review all findings above
+          - Fix critical and high severity issues immediately
+          - Consider adding pre-commit security hooks
+          - Enable GitHub secret scanning
+
+          EOF
+
+          cat security-report.md
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-report
+          path: security-report.md
