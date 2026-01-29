@@ -1,6 +1,7 @@
 # Ariadne
 
-Ariadne is a CLI tool and GitHub Action for running LLM agents with bounded context using data structures. It provides two execution patterns: ReAct for single-agent tasks and RLM for recursive sub-agent spawning.
+Ariadne is a CLI tool and GitHub Action for running LLM agents with bounded context.
+It provides two execution patterns: ReAct for single-agent tasks and RLM for recursive sub-agent spawning.
 
 ## Quick Start
 
@@ -209,10 +210,3 @@ ariadne -p openai react-run "task" --mcp-config ~/.config/claude/mcp.json
 
 MIT
 
----
-
-Sources:
-- [The Most Popular Python Frameworks and Libraries in 2025 | The PyCharm Blog](https://blog.jetbrains.com/pycharm/2025/09/the-most-popular-python-frameworks-and-libraries-in-2025-2/)
-- [Creating Great README Files for Your Python Projects – Real Python](https://realpython.com/readme-python-project/)
-- [Flask Project Template](https://github.com/xen/flask-project-template/blob/master/README.md)
-- [Django Sample App](https://github.com/gocardless/sample-legacy-django-app/blob/master/README.md)
