@@ -424,7 +424,7 @@ func (t *ParallelSpawnTool) Metadata() ToolMetadata {
 returns its answer. Use this when you have multiple independent tasks that can run concurrently.
 Returns a JSON object mapping task indices to their results.`,
 		Parameters: []ToolParameter{
-			{Name: "tasks", ParamType: "array", Description: "Array of task objects, each with 'task' and optional 'context' fields", Required: true},
+			{Name: "tasks", ParamType: "array", Description: "Array of task objects, each with 'task' and optional 'context' fields", Required: true, Items: map[string]interface{}{"type": "object"}},
 		},
 	}
 }

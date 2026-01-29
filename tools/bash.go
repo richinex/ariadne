@@ -107,7 +107,7 @@ func (t *BashTool) Metadata() ToolMetadata {
 		Description: "Execute an allowlisted command with structured arguments and optional environment",
 		Parameters: []ToolParameter{
 			{Name: "command", ParamType: "string", Description: "The command to execute", Required: true},
-			{Name: "argv", ParamType: "array", Description: "Command arguments", Required: false},
+			{Name: "argv", ParamType: "array", Description: "Command arguments", Required: false, Items: map[string]interface{}{"type": "string"}},
 			{Name: "env", ParamType: "object", Description: "Environment variables", Required: false},
 			{Name: "cwd", ParamType: "string", Description: "Working directory", Required: false},
 			{Name: "stdout_path", ParamType: "string", Description: "Path to write stdout", Required: false},
