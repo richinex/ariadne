@@ -77,7 +77,7 @@ func (p ProviderType) EnvVar() string {
 func (p ProviderType) DefaultModel() string {
 	switch p {
 	case ProviderOpenAI:
-		return ModelOpenAIGPT4o
+		return ModelOpenAIGPT52
 	case ProviderAnthropic:
 		return ModelAnthropicClaudeOpus45
 	case ProviderDeepSeek:
