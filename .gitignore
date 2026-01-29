@@ -87,6 +87,9 @@ compute_fib_10.py
 fibonacci.py
 fibonacci_parallel_results.txt
 fibonacci_results_summary.md
+__pycache__/
+*.pyc
+*.pyo
 
 # Example artifacts
 examples/router/
