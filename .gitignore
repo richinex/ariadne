@@ -105,3 +105,4 @@ golang_dsa/
 # GitHub Action artifacts (keep workflow files, ignore test artifacts)
 # NOTE: .github/ workflows are tracked, but test outputs are ignored
 docs/
+CLAUDE.md
