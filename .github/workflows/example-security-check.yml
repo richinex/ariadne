@@ -21,21 +21,19 @@ jobs:
         uses: richinex/ariadne@v1
         with:
           task: |
-            Perform a security analysis of this codebase:
-            1. Check for SQL injection vulnerabilities
-            2. Look for hardcoded secrets or credentials
-            3. Identify insecure API usage patterns
-            4. Check for command injection risks
-            5. Review error handling for information leakage
+            Perform a security analysis of the entrypoint.sh file:
+            1. Check for command injection vulnerabilities
+            2. Look for insecure variable handling
+            3. Identify unsafe use of eval or exec
+            4. Review input validation
+            5. Check for path traversal risks
 
-            Focus on Go files and shell scripts.
-            Provide specific file locations and line numbers for any findings.
-          command: rlm
+            Analyze only: entrypoint.sh
+            Provide specific line numbers and code snippets for any findings.
+          command: react-run
           provider: deepseek
           api_key: ${{ secrets.DEEPSEEK_API_KEY }}
-          depth: 5
-          timeout: 180
-          max-iter: 50
+          max-iter: 15
           verbose: false
 
       - name: Create security report
