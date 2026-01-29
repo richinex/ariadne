@@ -26,8 +26,8 @@ jobs:
         with:
           task: "List all markdown files in this repository"
           command: react-run
-          provider: deepseek
-          api_key: ${{ secrets.DEEPSEEK_API_KEY }}
+          provider: gemini
+          api_key: ${{ secrets.GEMINI_API_KEY }}
           max_iter: 10
           verbose: true
 
@@ -56,8 +56,8 @@ jobs:
         with:
           task: "Analyze the Makefile and describe what build targets are available"
           command: rlm
-          provider: deepseek
-          api_key: ${{ secrets.DEEPSEEK_API_KEY }}
+          provider: gemini
+          api_key: ${{ secrets.GEMINI_API_KEY }}
           depth: 3
           timeout: 60
           max_iter: 10

@@ -41,8 +41,8 @@ jobs:
             Changed files:
             ${{ steps.changed-files.outputs.files }}
           command: react-run
-          provider: deepseek
-          api_key: ${{ secrets.DEEPSEEK_API_KEY }}
+          provider: gemini
+          api_key: ${{ secrets.GEMINI_API_KEY }}
           max_iter: 20
           verbose: false
 
