@@ -79,9 +79,9 @@ fi
 
 # Execute ariadne and capture output (safe from shell injection)
 OUTPUT_FILE=$(mktemp -t ariadne-output.XXXXXXXXXX)
-EXIT_CODE=0
 
-ariadne "${CMD_ARGS[@]}" | tee "$OUTPUT_FILE" || EXIT_CODE=$?
+ariadne "${CMD_ARGS[@]}" | tee "$OUTPUT_FILE"
+EXIT_CODE=${PIPESTATUS[0]}
 
 # Set GitHub Actions outputs (guard against missing GITHUB_OUTPUT in local testing)
 if [ -n "${GITHUB_OUTPUT:-}" ]; then
