@@ -43,7 +43,7 @@ jobs:
             Provide specific, actionable feedback.
           provider: anthropic
           api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          max-iter: 20
+          max_iter: 20
           verbose: true
 
       - name: Post review as comment

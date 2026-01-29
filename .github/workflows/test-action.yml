@@ -28,7 +28,7 @@ jobs:
           command: react-run
           provider: deepseek
           api_key: ${{ secrets.DEEPSEEK_API_KEY }}
-          max-iter: 10
+          max_iter: 10
           verbose: true
 
       - name: Check output
@@ -60,7 +60,7 @@ jobs:
           api_key: ${{ secrets.DEEPSEEK_API_KEY }}
           depth: 3
           timeout: 60
-          max-iter: 10
+          max_iter: 10
           verbose: true
 
       - name: Check output
@@ -115,5 +115,5 @@ jobs:
           task: "What is the main purpose of this repository based on the README?"
           provider: ${{ matrix.provider }}
           api_key: ${{ secrets[format('{0}_API_KEY', matrix.provider)] }}
-          max-iter: 3
+          max_iter: 3
           verbose: false

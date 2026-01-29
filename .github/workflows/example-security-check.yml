@@ -33,7 +33,7 @@ jobs:
           command: react-run
           provider: deepseek
           api_key: ${{ secrets.DEEPSEEK_API_KEY }}
-          max-iter: 25
+          max_iter: 25
           verbose: false
 
       - name: Create security report

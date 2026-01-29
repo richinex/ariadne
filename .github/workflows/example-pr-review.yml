@@ -43,7 +43,7 @@ jobs:
           command: react-run
           provider: deepseek
           api_key: ${{ secrets.DEEPSEEK_API_KEY }}
-          max-iter: 20
+          max_iter: 20
           verbose: false
 
       - name: Save review to file

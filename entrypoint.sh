@@ -16,7 +16,7 @@ API_KEY="${INPUT_API_KEY:-}"
 
 # Optional inputs with defaults
 COMMAND="${INPUT_COMMAND:-react-run}"
-MAX_ITER="${INPUT_MAX_ITER:-10}"
+MAX_ITER="${INPUT_MAX_ITER:-25}"
 VERBOSE="${INPUT_VERBOSE:-false}"
 DEPTH="${INPUT_DEPTH:-3}"
 TIMEOUT="${INPUT_TIMEOUT:-120}"
