@@ -1,0 +1,83 @@
+name: Release Ariadne Action
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version
+        id: version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/}
+          MAJOR=$(echo $VERSION | cut -d. -f1)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "major=$MAJOR" >> $GITHUB_OUTPUT
+
+      - name: Generate release notes
+        id: notes
+        run: |
+          # Get previous tag
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+
+          if [ -z "$PREV_TAG" ]; then
+            # First release
+            NOTES="Initial release of Ariadne - Navigate codebases with AI like following a thread through a labyrinth"
+          else
+            # Generate notes from commits
+            NOTES=$(git log $PREV_TAG..HEAD --pretty=format:"- %s" --no-merges)
+          fi
+
+          # Save to file for multiline handling
+          cat > release-notes.md << 'EOF'
+          ## What's Changed
+
+          $NOTES
+
+          ## Usage
+
+          \`\`\`yaml
+          - uses: richinex/ariadne-action@${{ steps.version.outputs.version }}
+            with:
+              task: "Navigate your codebase and analyze complexity"
+              provider: openai
+              api-key: \${{ secrets.OPENAI_API_KEY }}
+          \`\`\`
+
+          See [README-ACTION.md](README-ACTION.md) for full documentation.
+          EOF
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: release-notes.md
+          draft: false
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update major version tag
+        run: |
+          MAJOR=${{ steps.version.outputs.major }}
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git tag -fa $MAJOR -m "Update $MAJOR to ${{ steps.version.outputs.version }}"
+          git push origin $MAJOR --force
+
+      - name: Announce release
+        run: |
+          echo "✅ Released Ariadne ${{ steps.version.outputs.version }}"
+          echo "🧵 Action available at: richinex/ariadne-action@${{ steps.version.outputs.version }}"
+          echo "🔖 Major tag updated: richinex/ariadne-action@${{ steps.version.outputs.major }}"

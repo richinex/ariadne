@@ -1,0 +1,118 @@
+name: Test Ariadne Action
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test-react-run:
+    name: Test react-run command
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        provider: [openai, anthropic, deepseek]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Ariadne react-run
+        id: ariadne
+        uses: ./
+        with:
+          task: "List all markdown files in this repository"
+          command: react-run
+          provider: ${{ matrix.provider }}
+          api-key: ${{ secrets[format('{0}_API_KEY', matrix.provider)] }}
+          max-iterations: 5
+          verbose: true
+
+      - name: Check output
+        run: |
+          echo "Exit code: ${{ steps.ariadne.outputs.exit-code }}"
+          echo "Result length: ${#RESULT}"
+          if [ "${{ steps.ariadne.outputs.exit-code }}" -ne "0" ]; then
+            echo "Error: Ariadne failed with exit code ${{ steps.ariadne.outputs.exit-code }}"
+            exit 1
+          fi
+        env:
+          RESULT: ${{ steps.ariadne.outputs.result }}
+
+  test-rlm:
+    name: Test rlm command
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Ariadne rlm
+        id: ariadne
+        uses: ./
+        with:
+          task: "Analyze the Makefile and describe what build targets are available"
+          command: rlm
+          provider: deepseek
+          api-key: ${{ secrets.DEEPSEEK_API_KEY }}
+          depth: 3
+          timeout: 60
+          max-iterations: 10
+          verbose: true
+
+      - name: Check output
+        run: |
+          echo "Exit code: ${{ steps.ariadne.outputs.exit-code }}"
+          echo "Result: ${{ steps.ariadne.outputs.result }}"
+          if [ "${{ steps.ariadne.outputs.exit-code }}" -ne "0" ]; then
+            echo "Error: Ariadne RLM failed"
+            exit 1
+          fi
+
+  test-error-handling:
+    name: Test error handling
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Test missing required input
+        id: missing-input
+        continue-on-error: true
+        uses: ./
+        with:
+          provider: openai
+          api-key: ${{ secrets.OPENAI_API_KEY }}
+          # Missing required 'task' input
+
+      - name: Verify error handling
+        run: |
+          if [ "${{ steps.missing-input.outcome }}" == "success" ]; then
+            echo "Error: Action should have failed with missing task input"
+            exit 1
+          fi
+          echo "Error handling works correctly"
+
+  test-all-providers:
+    name: Matrix test all providers
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        provider: [openai, anthropic, deepseek, gemini]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Test provider ${{ matrix.provider }}
+        uses: ./
+        with:
+          task: "What is the main purpose of this repository based on the README?"
+          provider: ${{ matrix.provider }}
+          api-key: ${{ secrets[format('{0}_API_KEY', matrix.provider)] }}
+          max-iterations: 3
+          verbose: false

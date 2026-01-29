@@ -1,0 +1,102 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+davingo
+*.test
+*.out
+
+# Go workspace file
+go.work
+go.work.sum
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool
+*.out
+coverage.txt
+coverage.html
+
+# Dependency directories (remove if needed)
+vendor/
+
+# Go module cache
+go.sum.backup
+
+# Build artifacts
+dist/
+build/
+bin/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Project-specific ignores
+# Runtime directory
+.davingo/
+*.db
+
+# Personal documentation and notes
+docs/
+notes.txt
+to_write.txt
+integration.txt
+more-rlms.txt
+on-rlms.txt
+sidecars.txt
+progress.md
+
+# Claude Code session files
+.claude/
+
+# Test and temporary files
+testdata/
+mcp-test.json
+*.tmp
+*.log
+output.txt
+test.py
+compute_fib_10.py
+fibonacci.py
+fibonacci_parallel_results.txt
+fibonacci_results_summary.md
+
+# Example artifacts
+examples/router/
+golang_dsa/
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# GitHub Action artifacts (keep workflow files, ignore test artifacts)
+# NOTE: .github/ workflows are tracked, but test outputs are ignored
+docs/

@@ -1,0 +1,144 @@
+name: Security & Quality Gate
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  security-scan:
+    name: Security Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Security vulnerability scan
+        id: security
+        uses: richinex/ariadne-action@v1
+        with:
+          task: |
+            Scan the codebase for security vulnerabilities:
+            - Hardcoded secrets and API keys
+            - SQL injection vulnerabilities
+            - Command injection risks
+            - Path traversal vulnerabilities
+            - Insecure cryptographic practices
+            - Exposed sensitive data
+
+            Flag issues as: CRITICAL, HIGH, MEDIUM, or LOW
+          provider: openai
+          api-key: ${{ secrets.OPENAI_API_KEY }}
+          max-iterations: 15
+          verbose: true
+
+      - name: Check for critical issues
+        id: check-critical
+        run: |
+          RESULT="${{ steps.security.outputs.result }}"
+          if echo "$RESULT" | grep -qi "CRITICAL"; then
+            echo "has-critical=true" >> $GITHUB_OUTPUT
+            echo "❌ CRITICAL security issues found!"
+            exit 1
+          else
+            echo "has-critical=false" >> $GITHUB_OUTPUT
+            echo "✅ No critical security issues found"
+          fi
+
+      - name: Save security report
+        if: always()
+        run: |
+          mkdir -p security-reports
+          cat > security-reports/scan-${{ github.sha }}.md << 'EOF'
+          # Security Scan Report
+          **Commit**: ${{ github.sha }}
+          **Branch**: ${{ github.ref_name }}
+          **Date**: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+          ${{ steps.security.outputs.result }}
+          EOF
+
+      - name: Upload security report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-report
+          path: security-reports/
+          retention-days: 30
+
+  quality-check:
+    name: Code Quality Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Code quality analysis
+        id: quality
+        uses: richinex/ariadne-action@v1
+        with:
+          task: |
+            Analyze code quality and best practices:
+            - Error handling patterns
+            - Code complexity and maintainability
+            - Naming conventions
+            - Documentation completeness
+            - Test coverage gaps
+            - Go best practices violations
+
+            Provide specific recommendations.
+          provider: anthropic
+          api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          max-iterations: 12
+
+      - name: Comment quality report
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const quality = `## 📊 Code Quality Report
+
+            ${{ steps.quality.outputs.result }}
+
+            ---
+            *Automated quality analysis by Ariadne - Navigating code quality like a thread through the labyrinth*
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: quality
+            });
+
+  gate-decision:
+    name: Quality Gate Decision
+    runs-on: ubuntu-latest
+    needs: [security-scan, quality-check]
+    if: always()
+
+    steps:
+      - name: Evaluate gate status
+        run: |
+          SECURITY="${{ needs.security-scan.result }}"
+          QUALITY="${{ needs.quality-check.result }}"
+
+          echo "Security scan: $SECURITY"
+          echo "Quality check: $QUALITY"
+
+          if [ "$SECURITY" == "failure" ]; then
+            echo "❌ Quality gate FAILED - Critical security issues detected"
+            exit 1
+          elif [ "$QUALITY" == "failure" ]; then
+            echo "⚠️  Quality gate WARNING - Quality issues detected"
+            # Don't fail on quality issues, just warn
+          else
+            echo "✅ Quality gate PASSED"
+          fi

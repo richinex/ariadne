@@ -1,0 +1,56 @@
+name: 'Ariadne AI Agent'
+description: 'Like Ariadne''s thread through the labyrinth - navigate massive codebases with LLM-powered agents for code analysis, PR reviews, and automated tasks'
+author: 'richinex'
+
+branding:
+  icon: 'compass'
+  color: 'purple'
+
+inputs:
+  task:
+    description: 'The task or prompt for the agent to execute'
+    required: true
+
+  command:
+    description: 'Command to run: react-run (single agent) or rlm (reasoning agent)'
+    required: false
+    default: 'react-run'
+
+  provider:
+    description: 'LLM provider: openai, anthropic, deepseek, or gemini'
+    required: true
+
+  api-key:
+    description: 'API key for the LLM provider. MUST use GitHub secrets (e.g., ${{ secrets.OPENAI_API_KEY }}). Never commit API keys to repository.'
+    required: true
+
+  max-iterations:
+    description: 'Maximum number of reasoning iterations'
+    required: false
+    default: '10'
+
+  verbose:
+    description: 'Enable verbose logging'
+    required: false
+    default: 'false'
+
+  depth:
+    description: 'Search depth (only used with command: rlm)'
+    required: false
+    default: '3'
+
+  timeout:
+    description: 'Timeout in seconds (only used with command: rlm)'
+    required: false
+    default: '120'
+
+outputs:
+  result:
+    description: 'Output from the davingo agent'
+
+  exit-code:
+    description: 'Exit code from davingo execution (0 = success)'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'

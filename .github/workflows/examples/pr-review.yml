@@ -1,0 +1,79 @@
+name: AI-Powered PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  ai-review:
+    name: Review PR with Ariadne
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for better context
+
+      - name: Get changed files
+        id: files
+        run: |
+          FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | tr '\n' ' ')
+          echo "changed=$FILES" >> $GITHUB_OUTPUT
+
+      - name: Navigate PR with Ariadne
+        id: review
+        uses: richinex/ariadne-action@v1
+        with:
+          task: |
+            Review the following changed files for this pull request:
+            ${{ steps.files.outputs.changed }}
+
+            Focus on:
+            1. Security vulnerabilities (SQL injection, XSS, hardcoded secrets)
+            2. Potential bugs and edge cases
+            3. Performance issues
+            4. Code quality and best practices
+            5. Test coverage gaps
+
+            Provide specific, actionable feedback.
+          provider: anthropic
+          api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          max-iterations: 20
+          verbose: true
+
+      - name: Post review as comment
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const review = `## 🧵 Ariadne Code Review
+
+            ${{ steps.review.outputs.result }}
+
+            ---
+            *Powered by [Ariadne](https://github.com/richinex/ariadne-action) - Navigating your codebase like a thread through the labyrinth*
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: review
+            });
+
+      - name: Handle review failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '⚠️ AI code review failed. Check the workflow logs for details.'
+            });
