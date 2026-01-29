@@ -57,7 +57,7 @@ jobs:
           api_key: ${{ secrets.DEEPSEEK_API_KEY }}
           depth: ${{ steps.target.outputs.depth }}
           timeout: 600  # 10 minutes
-          max-iterations: 30
+          max-iter: 30
           verbose: true
 
       - name: Save analysis report

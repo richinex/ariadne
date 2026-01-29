@@ -35,7 +35,7 @@ jobs:
             Flag issues as: CRITICAL, HIGH, MEDIUM, or LOW
           provider: openai
           api_key: ${{ secrets.OPENAI_API_KEY }}
-          max-iterations: 15
+          max-iter: 15
           verbose: true
 
       - name: Check for critical issues
@@ -96,7 +96,7 @@ jobs:
             Provide specific recommendations.
           provider: anthropic
           api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          max-iterations: 12
+          max-iter: 12
 
       - name: Comment quality report
         if: github.event_name == 'pull_request'

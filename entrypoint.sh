@@ -11,7 +11,7 @@ API_KEY="${INPUT_API_KEY:-}"
 
 # Optional inputs with defaults
 COMMAND="${INPUT_COMMAND:-react-run}"
-MAX_ITERATIONS="${INPUT_MAX_ITERATIONS:-10}"
+MAX_ITER="${INPUT_MAX_ITER:-10}"
 VERBOSE="${INPUT_VERBOSE:-false}"
 DEPTH="${INPUT_DEPTH:-3}"
 TIMEOUT="${INPUT_TIMEOUT:-120}"
@@ -56,7 +56,7 @@ esac
 CMD_ARGS=(
     "$COMMAND"
     "--provider" "$PROVIDER"
-    "--max-iter" "$MAX_ITERATIONS"
+    "--max-iter" "$MAX_ITER"
 )
 
 # Add command-specific flags

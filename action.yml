@@ -24,7 +24,7 @@ inputs:
     description: 'API key for the LLM provider. MUST use GitHub secrets (e.g., secrets.OPENAI_API_KEY). Never commit API keys to repository.'
     required: true
 
-  max-iterations:
+  max-iter:
     description: 'Maximum number of reasoning iterations'
     required: false
     default: '10'

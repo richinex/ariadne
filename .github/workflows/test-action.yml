@@ -27,7 +27,7 @@ jobs:
           command: react-run
           provider: ${{ matrix.provider }}
           api_key: ${{ secrets[format('{0}_API_KEY', matrix.provider)] }}
-          max-iterations: 5
+          max-iter: 5
           verbose: true
 
       - name: Check output
@@ -59,7 +59,7 @@ jobs:
           api_key: ${{ secrets.DEEPSEEK_API_KEY }}
           depth: 3
           timeout: 60
-          max-iterations: 10
+          max-iter: 10
           verbose: true
 
       - name: Check output
@@ -114,5 +114,5 @@ jobs:
           task: "What is the main purpose of this repository based on the README?"
           provider: ${{ matrix.provider }}
           api_key: ${{ secrets[format('{0}_API_KEY', matrix.provider)] }}
-          max-iterations: 3
+          max-iter: 3
           verbose: false
