@@ -204,7 +204,6 @@ ariadne -p openai react-run "task" --mcp-config ~/.config/claude/mcp.json
 ## Documentation
 
 - [GitHub Action Documentation](README-ACTION.md)
-- [API Reference](https://pkg.go.dev/github.com/richinex/ariadne)
 
 ## License
 
