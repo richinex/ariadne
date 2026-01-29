@@ -20,7 +20,7 @@ inputs:
     description: 'LLM provider: openai, anthropic, deepseek, or gemini'
     required: true
 
-  api-key:
+  api_key:
     description: 'API key for the LLM provider. MUST use GitHub secrets (e.g., secrets.OPENAI_API_KEY). Never commit API keys to repository.'
     required: true
 
