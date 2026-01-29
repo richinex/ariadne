@@ -21,19 +21,19 @@ jobs:
         uses: richinex/ariadne@v1
         with:
           task: |
-            Perform a security analysis of the entrypoint.sh file:
-            1. Check for command injection vulnerabilities
-            2. Look for insecure variable handling
-            3. Identify unsafe use of eval or exec
-            4. Review input validation
-            5. Check for path traversal risks
+            Perform a security analysis of the cli/ folder:
+            1. Check for SQL injection vulnerabilities
+            2. Look for hardcoded secrets or credentials
+            3. Identify command injection risks in shell commands
+            4. Review error handling for information leakage
+            5. Check for insecure file operations
 
-            Analyze only: entrypoint.sh
-            Provide specific line numbers and code snippets for any findings.
+            Focus on: cli/**/*.go
+            Provide specific file locations and line numbers for any findings.
           command: react-run
           provider: deepseek
           api_key: ${{ secrets.DEEPSEEK_API_KEY }}
-          max-iter: 15
+          max-iter: 25
           verbose: false
 
       - name: Create security report
