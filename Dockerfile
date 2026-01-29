@@ -29,7 +29,7 @@ RUN go build \
     -trimpath \
     -buildvcs=false \
     -o davingo \
-    ./cmd/davingo
+    .
 
 # Stage 2: Runtime image with minimal dependencies
 FROM alpine:3.21
