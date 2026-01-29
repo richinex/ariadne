@@ -29,7 +29,7 @@ jobs:
           provider: gemini
           api_key: ${{ secrets.GEMINI_API_KEY }}
           max_iter: 10
-          verbose: true
+          verbose: false
 
       - name: Check output
         run: |
@@ -61,16 +61,16 @@ jobs:
           depth: 3
           timeout: 60
           max_iter: 10
-          verbose: true
+          verbose: false
 
       - name: Check output
         run: |
           echo "Exit code: ${{ steps.ariadne.outputs.exit-code }}"
-          echo "Result: ${{ steps.ariadne.outputs.result }}"
           if [ "${{ steps.ariadne.outputs.exit-code }}" -ne "0" ]; then
             echo "Error: Ariadne RLM failed"
             exit 1
           fi
+          echo "Test passed"
 
   test-error-handling:
     name: Test error handling
