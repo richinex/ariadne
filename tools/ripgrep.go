@@ -45,7 +45,7 @@ func (t *RipgrepTool) Metadata() ToolMetadata {
 		Parameters: []ToolParameter{
 			{Name: "pattern", ParamType: "string", Description: "The search pattern (use empty string with passthru to get all lines)", Required: true},
 			{Name: "path", ParamType: "string", Description: "Path to search in (default: current directory)", Required: false},
-			{Name: "glob", ParamType: "array", Description: "Glob patterns to filter files", Required: false},
+			{Name: "glob", ParamType: "array", Description: "Glob patterns to filter files", Required: false, Items: map[string]interface{}{"type": "string"}},
 			{Name: "case_sensitive", ParamType: "boolean", Description: "Case sensitive search (default: true)", Required: false},
 			{Name: "fixed_strings", ParamType: "boolean", Description: "Treat pattern as literal string", Required: false},
 			{Name: "max_results", ParamType: "integer", Description: "Maximum number of matching lines", Required: false},

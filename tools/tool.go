@@ -17,10 +17,11 @@ import (
 
 // ToolParameter defines a parameter schema for a tool.
 type ToolParameter struct {
-	Name        string `json:"name"`
-	ParamType   string `json:"param_type"`
-	Description string `json:"description"`
-	Required    bool   `json:"required"`
+	Name        string                 `json:"name"`
+	ParamType   string                 `json:"param_type"`
+	Description string                 `json:"description"`
+	Required    bool                   `json:"required"`
+	Items       map[string]interface{} `json:"items,omitempty"` // For array types, specifies the schema of array elements
 }
 
 // ToolMetadata describes what a tool does and how to use it.
