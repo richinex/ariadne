@@ -21,7 +21,7 @@ inputs:
     required: true
 
   api-key:
-    description: 'API key for the LLM provider. MUST use GitHub secrets (e.g., ${{ secrets.OPENAI_API_KEY }}). Never commit API keys to repository.'
+    description: 'API key for the LLM provider. MUST use GitHub secrets (e.g., secrets.OPENAI_API_KEY). Never commit API keys to repository.'
     required: true
 
   max-iterations:
