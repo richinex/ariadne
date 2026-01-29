@@ -52,21 +52,52 @@ case "$PROVIDER" in
         ;;
 esac
 
-# Build ariadne command as array (prevents shell injection)
-CMD_ARGS=(
-    "$COMMAND"
-    "--provider" "$PROVIDER"
-    "--max-iterations" "$MAX_ITERATIONS"
-)
+# Map GitHub Action command format (react-run) to CLI format (react run)
+case "$COMMAND" in
+    react-run)
+        CMD_ARGS=(
+            "react" "run"
+            "--provider" "$PROVIDER"
+            "--max-iterations" "$MAX_ITERATIONS"
+        )
+        ;;
 
-# Add verbose flag if enabled
+    react-chat)
+        CMD_ARGS=(
+            "react" "chat"
+            "--provider" "$PROVIDER"
+            "--max-iterations" "$MAX_ITERATIONS"
+        )
+        ;;
+
+    react-orchestrate)
+        CMD_ARGS=(
+            "react" "orchestrate"
+            "--provider" "$PROVIDER"
+            "--max-iterations" "$MAX_ITERATIONS"
+        )
+        ;;
+
+    rlm)
+        CMD_ARGS=(
+            "rlm"
+            "--provider" "$PROVIDER"
+            "--max-iterations" "$MAX_ITERATIONS"
+            "--depth" "$DEPTH"
+            "--timeout" "$TIMEOUT"
+        )
+        ;;
+
+    *)
+        echo "Error: Unknown command '$COMMAND'"
+        echo "Supported: react-run, react-chat, react-orchestrate, rlm"
+        exit 1
+        ;;
+esac
+
+# Add verbose flag if enabled (applies to all commands)
 if [ "$VERBOSE" = "true" ]; then
     CMD_ARGS+=("--verbose")
-fi
-
-# Add RLM-specific flags
-if [ "$COMMAND" = "rlm" ]; then
-    CMD_ARGS+=("--depth" "$DEPTH" "--timeout" "$TIMEOUT")
 fi
 
 # Add the task as the final argument
