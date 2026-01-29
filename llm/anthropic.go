@@ -201,11 +201,16 @@ func convertToAnthropicMessagesWithTools(messages []ChatMessage) ([]anthropic.Me
 func convertToAnthropicTools(tools []ToolDefinition) []anthropic.ToolUnionParam {
 	result := make([]anthropic.ToolUnionParam, len(tools))
 	for i, t := range tools {
+		// Extract properties and required from the full schema
+		properties, _ := t.Parameters["properties"].(map[string]interface{})
+		required, _ := t.Parameters["required"].([]string)
+
 		toolParam := anthropic.ToolParam{
 			Name:        t.Name,
 			Description: anthropic.String(t.Description),
 			InputSchema: anthropic.ToolInputSchemaParam{
-				Properties: t.Parameters,
+				Properties: properties,
+				Required:   required,
 			},
 		}
 		result[i] = anthropic.ToolUnionParam{OfTool: &toolParam}
