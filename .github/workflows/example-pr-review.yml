@@ -1,0 +1,64 @@
+name: AI PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    name: Review PR with AI
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed-files
+        run: |
+          FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | head -20)
+          echo "files<<EOF" >> $GITHUB_OUTPUT
+          echo "$FILES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: AI Code Review
+        id: review
+        uses: richinex/ariadne@v1
+        with:
+          task: |
+            Review the changes in this PR and provide:
+            1. Summary of what changed
+            2. Potential bugs or issues
+            3. Security concerns
+            4. Performance considerations
+            5. Suggestions for improvement
+
+            Changed files:
+            ${{ steps.changed-files.outputs.files }}
+          command: react-run
+          provider: deepseek
+          api_key: ${{ secrets.DEEPSEEK_API_KEY }}
+          max-iter: 20
+          verbose: false
+
+      - name: Save review to file
+        run: |
+          cat > review.md << 'REVIEWEOF'
+          ## AI Code Review 🤖
+
+          ${{ steps.review.outputs.result }}
+
+          ---
+          *Powered by [Ariadne](https://github.com/richinex/ariadne)*
+          REVIEWEOF
+
+      - name: Comment on PR
+        run: |
+          gh pr comment ${{ github.event.pull_request.number }} --body-file review.md
+        env:
+          GH_TOKEN: ${{ github.token }}
