@@ -49,6 +49,11 @@ func (p *DeepSeekProvider) Model() string {
 	return p.model
 }
 
+// getTemperature returns the temperature (DeepSeek models don't have beta restrictions)
+func (p *DeepSeekProvider) getTemperature() float32 {
+	return p.temperature
+}
+
 // Chat sends a chat completion request.
 func (p *DeepSeekProvider) Chat(ctx context.Context, messages []ChatMessage) (LLMResponse, error) {
 	return p.ChatWithFormat(ctx, messages, nil)
@@ -60,7 +65,7 @@ func (p *DeepSeekProvider) ChatWithFormat(ctx context.Context, messages []ChatMe
 		Model:       p.model,
 		Messages:    convertMessages(messages),
 		MaxCompletionTokens:   p.maxTokens,
-		Temperature: p.temperature,
+		Temperature: p.getTemperature(),
 	}
 
 	if format != nil {
@@ -95,7 +100,7 @@ func (p *DeepSeekProvider) ChatWithTools(ctx context.Context, messages []ChatMes
 		Model:       p.model,
 		Messages:    convertMessagesWithTools(messages),
 		MaxCompletionTokens:   p.maxTokens,
-		Temperature: p.temperature,
+		Temperature: p.getTemperature(),
 		Tools:       convertTools(tools),
 	}
 
@@ -132,7 +137,7 @@ func (p *DeepSeekProvider) StreamChat(ctx context.Context, messages []ChatMessag
 		Model:       p.model,
 		Messages:    convertMessages(messages),
 		MaxCompletionTokens:   p.maxTokens,
-		Temperature: p.temperature,
+		Temperature: p.getTemperature(),
 		Stream:      true,
 		StreamOptions: &openai.StreamOptions{
 			IncludeUsage: true,

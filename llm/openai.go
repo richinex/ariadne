@@ -44,6 +44,20 @@ func (p *OpenAIProvider) Model() string {
 	return p.model
 }
 
+// isBetaModel checks if a model has beta restrictions
+func (p *OpenAIProvider) isBetaModel() bool {
+	// gpt-5.2 and other beta models have fixed parameters
+	return p.model == "gpt-5.2" || p.model == "gpt-5.2-codex"
+}
+
+// getTemperature returns the appropriate temperature for the model
+func (p *OpenAIProvider) getTemperature() float32 {
+	if p.isBetaModel() {
+		return 1.0 // Beta models require temperature=1.0
+	}
+	return p.temperature
+}
+
 // Chat sends a chat completion request.
 func (p *OpenAIProvider) Chat(ctx context.Context, messages []ChatMessage) (LLMResponse, error) {
 	return p.ChatWithFormat(ctx, messages, nil)
@@ -55,7 +69,7 @@ func (p *OpenAIProvider) ChatWithFormat(ctx context.Context, messages []ChatMess
 		Model:       p.model,
 		Messages:    convertToOpenAIMessages(messages),
 		MaxCompletionTokens:   p.maxTokens,
-		Temperature: p.temperature,
+		Temperature: p.getTemperature(),
 	}
 
 	if format != nil {
@@ -89,7 +103,7 @@ func (p *OpenAIProvider) ChatWithTools(ctx context.Context, messages []ChatMessa
 		Model:       p.model,
 		Messages:    convertToOpenAIMessagesWithTools(messages),
 		MaxCompletionTokens:   p.maxTokens,
-		Temperature: p.temperature,
+		Temperature: p.getTemperature(),
 		Tools:       convertToOpenAITools(tools),
 	}
 
@@ -127,7 +141,7 @@ func (p *OpenAIProvider) StreamChat(ctx context.Context, messages []ChatMessage,
 		Model:       p.model,
 		Messages:    convertToOpenAIMessages(messages),
 		MaxCompletionTokens:   p.maxTokens,
-		Temperature: p.temperature,
+		Temperature: p.getTemperature(),
 		Stream:      true,
 		StreamOptions: &openai.StreamOptions{
 			IncludeUsage: true,

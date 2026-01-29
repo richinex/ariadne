@@ -1145,10 +1145,15 @@ func convertToToolDefs(tools []tools.Tool) []llm.ToolDefinition {
 		params := make(map[string]interface{})
 		required := []string{}
 		for _, p := range meta.Parameters {
-			params[p.Name] = map[string]interface{}{
+			paramDef := map[string]interface{}{
 				"type":        p.ParamType,
 				"description": p.Description,
 			}
+			// Add items field for array types (required by OpenAI and Anthropic)
+			if p.ParamType == "array" && p.Items != nil {
+				paramDef["items"] = p.Items
+			}
+			params[p.Name] = paramDef
 			if p.Required {
 				required = append(required, p.Name)
 			}
