@@ -35,22 +35,22 @@ Or create a `.env` file in your working directory.
 
 ## Commands
 
-### react run - Execute a single task with DSA tools
+### react-run - Execute a single task with DSA tools
 
 ```bash
-ariadne --provider openai react run "summarize this file"
-ariadne --provider deepseek react run "analyze all Go files in this project"
+ariadne --provider openai react-run "summarize this file"
+ariadne --provider deepseek react-run "analyze all Go files in this project"
 ```
 
 **Flags:**
 - `--mcp` - MCP server command (repeatable for multiple servers)
 - `--mcp-config` - Path to MCP config file
 
-### react chat - Interactive chat session with DSA tools
+### react-chat - Interactive chat session with DSA tools
 
 ```bash
-ariadne --provider openai react chat
-ariadne --provider anthropic react chat --session my-session
+ariadne --provider openai react-chat
+ariadne --provider anthropic react-chat --session my-session
 ```
 
 **Flags:**
@@ -59,10 +59,10 @@ ariadne --provider anthropic react chat --session my-session
 - `--mcp` - MCP server command (repeatable)
 - `--mcp-config` - Path to MCP config file
 
-### react orchestrate - Multi-agent orchestration with DSA tools
+### react-orchestrate - Multi-agent orchestration with DSA tools
 
 ```bash
-ariadne --provider openai react orchestrate "analyze this codebase" --agent file --agent shell
+ariadne --provider openai react-orchestrate "analyze this codebase" --agent file --agent shell
 ```
 
 **Flags:**
@@ -183,22 +183,22 @@ This enables analyzing dozens of files without bloating LLM context.
 
 ```bash
 # Simple file analysis with ReAct
-ariadne -p openai react run "what does main.go do?"
+ariadne -p openai react-run "what does main.go do?"
 
 # Multi-file analysis with DSA tools
-ariadne -p deepseek react run "analyze all Go files in the project" --verbose
+ariadne -p deepseek react-run "analyze all Go files in the project" --verbose
 
 # Multi-file analysis with RLM (recursive spawning)
 ariadne -p deepseek rlm "analyze the tools/ directory and summarize each file" --verbose
 
 # Interactive coding session with persistence
-ariadne -p anthropic react chat --session coding
+ariadne -p anthropic react-chat --session coding
 
 # Complex orchestration across multiple agents
-ariadne -p openai react orchestrate "refactor this module" -a file -a shell
+ariadne -p openai react-orchestrate "refactor this module" -a file -a shell
 
 # With MCP servers (Model Context Protocol)
-ariadne -p openai react run "task" --mcp "npx -y @modelcontextprotocol/server-filesystem ."
+ariadne -p openai react-run "task" --mcp "npx -y @modelcontextprotocol/server-filesystem ."
 ```
 
 ## ReAct vs RLM: Which to Use?
@@ -243,15 +243,15 @@ Ariadne supports [Model Context Protocol (MCP)](https://modelcontextprotocol.io/
 
 ```bash
 # Single MCP server
-ariadne -p openai react run "task" --mcp "npx -y @modelcontextprotocol/server-filesystem ."
+ariadne -p openai react-run "task" --mcp "npx -y @modelcontextprotocol/server-filesystem ."
 
 # Multiple MCP servers
-ariadne -p openai react run "task" \
+ariadne -p openai react-run "task" \
   --mcp "npx -y @modelcontextprotocol/server-filesystem ." \
   --mcp "npx -y @modelcontextprotocol/server-memory"
 
 # Or use MCP config file (Anthropic format)
-ariadne -p openai react run "task" --mcp-config ~/.config/claude/mcp.json
+ariadne -p openai react-run "task" --mcp-config ~/.config/claude/mcp.json
 ```
 
 **Tested MCP servers:**

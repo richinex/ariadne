@@ -44,7 +44,9 @@ Two patterns available:
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Show verbose output")
 
 	// Add commands
-	rootCmd.AddCommand(reactCmd())
+	rootCmd.AddCommand(reactRunCmd())
+	rootCmd.AddCommand(reactChatCmd())
+	rootCmd.AddCommand(reactOrchestrateCmd())
 	rootCmd.AddCommand(rlmCmd())
 	rootCmd.AddCommand(toolsCmd())
 
@@ -54,39 +56,19 @@ Two patterns available:
 	}
 }
 
-// reactCmd creates the react parent command with subcommands
-func reactCmd() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "react",
-		Short: "ReAct pattern with DSA tools (bounded context)",
-		Long: `Execute tasks using the ReAct (Reasoning + Acting) pattern with DSA tools.
-
-DSA tools provide bounded context via:
-- Suffix Array: O(m log n) pattern search across all stored files
-- Radix Trie: O(m+k) prefix lookups
-- SQLite: Content persistence across sessions
-
-Subcommands:
-  run         Single agent execution
-  chat        Interactive chat session
-  orchestrate Multi-agent coordination`,
-	}
-
-	// Add subcommands
-	cmd.AddCommand(reactRunCmd())
-	cmd.AddCommand(reactChatCmd())
-	cmd.AddCommand(reactOrchestrateCmd())
-
-	return cmd
-}
-
 func reactRunCmd() *cobra.Command {
 	var mcpServers []string
 	var mcpConfigPath string
 
 	cmd := &cobra.Command{
-		Use:   "run [task]",
+		Use:   "react-run [task]",
 		Short: "Execute a task with a single agent + DSA tools",
+		Long: `Execute tasks using the ReAct (Reasoning + Acting) pattern with DSA tools.
+
+DSA tools provide bounded context via:
+- Suffix Array: O(m log n) pattern search across all stored files
+- Radix Trie: O(m+k) prefix lookups
+- SQLite: Content persistence across sessions`,
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts := cli.Options{
@@ -112,8 +94,14 @@ func reactChatCmd() *cobra.Command {
 	var mcpConfigPath string
 
 	cmd := &cobra.Command{
-		Use:   "chat",
+		Use:   "react-chat",
 		Short: "Start an interactive chat session with DSA tools",
+		Long: `Start an interactive chat session using the ReAct pattern with DSA tools.
+
+DSA tools provide bounded context via:
+- Suffix Array: O(m log n) pattern search across all stored files
+- Radix Trie: O(m+k) prefix lookups
+- SQLite: Content persistence across sessions`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts := cli.Options{
 				Provider:    provider,
@@ -141,8 +129,14 @@ func reactOrchestrateCmd() *cobra.Command {
 	var mcpConfigPath string
 
 	cmd := &cobra.Command{
-		Use:   "orchestrate [task]",
+		Use:   "react-orchestrate [task]",
 		Short: "Orchestrate a task across multiple agents with DSA tools",
+		Long: `Orchestrate a task across multiple agents using the ReAct pattern with DSA tools.
+
+DSA tools provide bounded context via:
+- Suffix Array: O(m log n) pattern search across all stored files
+- Radix Trie: O(m+k) prefix lookups
+- SQLite: Content persistence across sessions`,
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts := cli.Options{

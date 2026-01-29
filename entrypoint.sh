@@ -52,50 +52,19 @@ case "$PROVIDER" in
         ;;
 esac
 
-# Map GitHub Action command format (react-run) to CLI format (react run)
-case "$COMMAND" in
-    react-run)
-        CMD_ARGS=(
-            "react" "run"
-            "--provider" "$PROVIDER"
-            "--max-iterations" "$MAX_ITERATIONS"
-        )
-        ;;
+# Build ariadne command as array (prevents shell injection)
+CMD_ARGS=(
+    "$COMMAND"
+    "--provider" "$PROVIDER"
+    "--max-iterations" "$MAX_ITERATIONS"
+)
 
-    react-chat)
-        CMD_ARGS=(
-            "react" "chat"
-            "--provider" "$PROVIDER"
-            "--max-iterations" "$MAX_ITERATIONS"
-        )
-        ;;
+# Add command-specific flags
+if [ "$COMMAND" = "rlm" ]; then
+    CMD_ARGS+=("--depth" "$DEPTH" "--timeout" "$TIMEOUT")
+fi
 
-    react-orchestrate)
-        CMD_ARGS=(
-            "react" "orchestrate"
-            "--provider" "$PROVIDER"
-            "--max-iterations" "$MAX_ITERATIONS"
-        )
-        ;;
-
-    rlm)
-        CMD_ARGS=(
-            "rlm"
-            "--provider" "$PROVIDER"
-            "--max-iterations" "$MAX_ITERATIONS"
-            "--depth" "$DEPTH"
-            "--timeout" "$TIMEOUT"
-        )
-        ;;
-
-    *)
-        echo "Error: Unknown command '$COMMAND'"
-        echo "Supported: react-run, react-chat, react-orchestrate, rlm"
-        exit 1
-        ;;
-esac
-
-# Add verbose flag if enabled (applies to all commands)
+# Add verbose flag if enabled
 if [ "$VERBOSE" = "true" ]; then
     CMD_ARGS+=("--verbose")
 fi
