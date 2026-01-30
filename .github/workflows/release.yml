@@ -27,38 +27,15 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "major=$MAJOR" >> $GITHUB_OUTPUT
 
-      - name: Generate release notes
-        id: notes
-        run: |
-          VERSION=${{ steps.version.outputs.version }}
-
-          # Get previous tag
-          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
-
-          if [ -z "$PREV_TAG" ]; then
-            NOTES="Initial release of Ariadne"
-          else
-            NOTES=$(git log $PREV_TAG..HEAD --pretty=format:"- %s" --no-merges)
-          fi
-
-          # Write release notes - avoid secrets syntax entirely
-          cat > release-notes.md << NOTES_EOF
-          ## What's Changed
-
-          ${NOTES}
-
-          ## Usage
-
-          See [README-ACTION.md](README-ACTION.md) for installation and usage examples.
-          NOTES_EOF
-
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
-          body_path: release-notes.md
+          generate_release_notes: true
+          append_body: true
+          body: |
+            See [README-ACTION.md](README-ACTION.md) for usage.
           draft: false
           prerelease: false
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update major version tag
         run: |
