@@ -101,12 +101,13 @@ func DefaultSpawnConfig() SpawnConfig {
 // SpawnAgentTool enables recursive sub-agent spawning.
 // Implements the RLM pattern where any agent can spawn sub-agents.
 type SpawnAgentTool struct {
-	provider   llm.Provider
-	config     SpawnConfig
-	toolConfig ToolConfig
-	depth      int  // Current recursion depth
-	verbose    bool // Print debug output
-	metrics    *SpawnMetrics // Metrics tracking
+	provider         llm.Provider
+	subagentProvider llm.Provider // Optional: different provider for sub-agents (cost optimization)
+	config           SpawnConfig
+	toolConfig       ToolConfig
+	depth            int  // Current recursion depth
+	verbose          bool // Print debug output
+	metrics          *SpawnMetrics // Metrics tracking
 
 	// Tools available to spawned agents (includes this tool for recursion)
 	availableTools []Tool
@@ -129,6 +130,16 @@ func (t *SpawnAgentTool) WithTools(tools []Tool) *SpawnAgentTool {
 	return t
 }
 
+// WithSubagentProvider sets a different provider for sub-agents.
+// If set, depth > 0 agents will use this provider instead of the root provider.
+// Accepts nil safely (no-op) to enable clean fluent chains.
+func (t *SpawnAgentTool) WithSubagentProvider(provider llm.Provider) *SpawnAgentTool {
+	if provider != nil {
+		t.subagentProvider = provider
+	}
+	return t
+}
+
 // Verbose enables debug output for sub-agents.
 func (t *SpawnAgentTool) Verbose(v bool) *SpawnAgentTool {
 	t.verbose = v
@@ -137,14 +148,21 @@ func (t *SpawnAgentTool) Verbose(v bool) *SpawnAgentTool {
 
 // atDepth creates a child spawn tool at deeper recursion level.
 func (t *SpawnAgentTool) atDepth(depth int) *SpawnAgentTool {
+	// Use subagent provider for depth > 0 if configured (cost optimization)
+	providerToUse := t.provider
+	if depth > 0 && t.subagentProvider != nil {
+		providerToUse = t.subagentProvider
+	}
+
 	child := &SpawnAgentTool{
-		provider:       t.provider,
-		config:         t.config,
-		toolConfig:     t.toolConfig,
-		depth:          depth,
-		verbose:        t.verbose,
-		metrics:        t.metrics,
-		availableTools: t.availableTools,
+		provider:         providerToUse,
+		subagentProvider: t.subagentProvider,
+		config:           t.config,
+		toolConfig:       t.toolConfig,
+		depth:            depth,
+		verbose:          t.verbose,
+		metrics:          t.metrics,
+		availableTools:   t.availableTools,
 	}
 	return child
 }

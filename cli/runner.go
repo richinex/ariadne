@@ -27,10 +27,11 @@ import (
 
 // Options holds CLI execution options.
 type Options struct {
-	Provider    string
-	MaxIter     int
-	ToolRetries uint32
-	Verbose     bool
+	Provider         string
+	SubagentProvider string // Optional: different provider for sub-agents in RLM mode
+	MaxIter          int
+	ToolRetries      uint32
+	Verbose          bool
 }
 
 // DefaultOptions returns default CLI options.
@@ -298,6 +299,19 @@ func RLM(ctx context.Context, task string, maxDepth, timeoutSecs int, mcpServers
 		return err
 	}
 
+	// Create optional subagent provider for cost optimization
+	var subagentProvider llm.Provider
+	if opts.SubagentProvider != "" {
+		subagentProvider, err = createProvider(opts.SubagentProvider)
+		if err != nil {
+			return fmt.Errorf("failed to create subagent provider: %w", err)
+		}
+		if opts.Verbose {
+			fmt.Printf("Using %s (%s) for root agent\n", opts.Provider, provider.Model())
+			fmt.Printf("Using %s (%s) for sub-agents\n", opts.SubagentProvider, subagentProvider.Model())
+		}
+	}
+
 	// Create ResultStore for DSA-based storage/search
 	resultStore, cleanup := createResultStore()
 	if cleanup != nil {
@@ -377,8 +391,10 @@ func RLM(ctx context.Context, task string, maxDepth, timeoutSecs int, mcpServers
 	availableTools, mcpConn.toolNames = mergeTools(availableTools, mcpConn.tools)
 
 	// Create the spawn tool with available tools
-	spawnTool := tools.NewSpawnAgentTool(provider, spawnConfig, toolConfig)
-	spawnTool = spawnTool.WithTools(availableTools).Verbose(opts.Verbose)
+	spawnTool := tools.NewSpawnAgentTool(provider, spawnConfig, toolConfig).
+		WithSubagentProvider(subagentProvider). // nil-safe, no-op if not configured
+		WithTools(availableTools).
+		Verbose(opts.Verbose)
 
 	// Also create parallel spawn tool
 	parallelSpawn := tools.NewParallelSpawnTool(spawnTool)

@@ -20,6 +20,8 @@ MAX_ITER="${INPUT_MAX_ITER:-25}"
 VERBOSE="${INPUT_VERBOSE:-false}"
 DEPTH="${INPUT_DEPTH:-3}"
 TIMEOUT="${INPUT_TIMEOUT:-120}"
+SUBAGENT_PROVIDER="${INPUT_SUBAGENT_PROVIDER:-}"
+SUBAGENT_API_KEY="${INPUT_SUBAGENT_API_KEY:-}"
 
 # Validate required inputs
 if [ -z "$TASK" ]; then
@@ -57,6 +59,31 @@ case "$PROVIDER" in
         ;;
 esac
 
+# Handle subagent provider if specified (cost optimization for RLM mode)
+if [ -n "$SUBAGENT_PROVIDER" ]; then
+    # If subagent API key is provided, use it; otherwise use main API key
+    SUBAGENT_KEY="${SUBAGENT_API_KEY:-$API_KEY}"
+
+    case "$SUBAGENT_PROVIDER" in
+        openai)
+            export OPENAI_API_KEY="$SUBAGENT_KEY"
+            ;;
+        anthropic)
+            export ANTHROPIC_API_KEY="$SUBAGENT_KEY"
+            ;;
+        deepseek)
+            export DEEPSEEK_API_KEY="$SUBAGENT_KEY"
+            ;;
+        gemini)
+            export GEMINI_API_KEY="$SUBAGENT_KEY"
+            ;;
+        *)
+            echo "Error: Unknown subagent provider '$SUBAGENT_PROVIDER'. Supported: openai, anthropic, deepseek, gemini"
+            exit 1
+            ;;
+    esac
+fi
+
 # Build ariadne command as array (prevents shell injection)
 CMD_ARGS=(
     "$COMMAND"
@@ -67,6 +94,11 @@ CMD_ARGS=(
 # Add command-specific flags
 if [ "$COMMAND" = "rlm" ]; then
     CMD_ARGS+=("--depth" "$DEPTH" "--timeout" "$TIMEOUT")
+
+    # Add subagent provider flag if specified
+    if [ -n "$SUBAGENT_PROVIDER" ]; then
+        CMD_ARGS+=("--subagent-provider" "$SUBAGENT_PROVIDER")
+    fi
 fi
 
 # Add verbose flag if enabled

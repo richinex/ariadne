@@ -31,8 +31,10 @@ jobs:
             Focus on: cli/**/*.go
             Provide specific file locations and line numbers for any findings.
           command: rlm
-          provider: gemini
-          api_key: ${{ secrets.GEMINI_API_KEY }}
+          provider: openai
+          subagent_provider: gemini
+          api_key: ${{ secrets.OPENAI_API_KEY }}
+          subagent_api_key: ${{ secrets.GEMINI_API_KEY }}
           max_iter: 25
           depth: 3
           timeout: 180

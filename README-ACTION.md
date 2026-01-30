@@ -24,6 +24,8 @@ Run LLM agents in your CI/CD workflows for automated code analysis, PR reviews, 
 | `verbose` | No | `false` | Enable verbose logging |
 | `depth` | No | `3` | Search depth for RLM mode |
 | `timeout` | No | `120` | Timeout in seconds for RLM mode |
+| `subagent_provider` | No | - | LLM provider for sub-agents in RLM mode |
+| `subagent_api_key` | No | - | API key for subagent provider (defaults to main api_key) |
 
 ## Outputs
 
@@ -235,6 +237,18 @@ with:
   depth: 5
   timeout: 300
   max_iter: 25
+```
+
+Use `subagent_provider` to specify a different provider for sub-agents:
+
+```yaml
+with:
+  command: rlm
+  provider: openai
+  subagent_provider: gemini
+  api_key: ${{ secrets.OPENAI_API_KEY }}
+  subagent_api_key: ${{ secrets.GEMINI_API_KEY }}
+  depth: 3
 ```
 
 ## Troubleshooting

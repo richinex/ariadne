@@ -163,6 +163,7 @@ func rlmCmd() *cobra.Command {
 	var timeout int
 	var mcpServers []string
 	var mcpConfigPath string
+	var subagentProvider string
 
 	cmd := &cobra.Command{
 		Use:   "rlm [task]",
@@ -176,16 +177,21 @@ The RLM pattern enables:
 - Context efficiency (children return answers, not raw content)
 - STATELESS: No session persistence
 
+Cost optimization:
+- Use --subagent-provider to specify a cheaper model for sub-agents
+- Example: --provider openai --subagent-provider deepseek (root uses gpt-5.2, children use deepseek-chat)
+
 MCP servers can be added with --mcp flag (repeatable) or --mcp-config file.
 
 Based on Alex Zhang's RLM architecture.`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts := cli.Options{
-				Provider:    provider,
-				MaxIter:     maxIter,
-				ToolRetries: toolRetries,
-				Verbose:     verbose,
+				Provider:         provider,
+				SubagentProvider: subagentProvider,
+				MaxIter:          maxIter,
+				ToolRetries:      toolRetries,
+				Verbose:          verbose,
 			}
 			return cli.RLM(context.Background(), args[0], maxDepth, timeout, mcpServers, mcpConfigPath, opts)
 		},
@@ -193,6 +199,7 @@ Based on Alex Zhang's RLM architecture.`,
 
 	cmd.Flags().IntVar(&maxDepth, "depth", 3, "Maximum recursion depth for sub-agents")
 	cmd.Flags().IntVar(&timeout, "timeout", 120, "Timeout in seconds per sub-agent")
+	cmd.Flags().StringVar(&subagentProvider, "subagent-provider", "", "LLM provider for sub-agents (cost optimization): openai, anthropic, deepseek, gemini")
 	cmd.Flags().StringArrayVar(&mcpServers, "mcp", nil, "MCP server command (repeatable)")
 	cmd.Flags().StringVar(&mcpConfigPath, "mcp-config", "", "Path to MCP config file")
 

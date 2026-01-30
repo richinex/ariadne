@@ -44,6 +44,16 @@ inputs:
     required: false
     default: '120'
 
+  subagent_provider:
+    description: 'LLM provider for sub-agents in RLM mode (cost optimization): openai, anthropic, deepseek, gemini. Example: provider=openai subagent_provider=deepseek uses gpt-5.2 for root, deepseek-chat for children.'
+    required: false
+    default: ''
+
+  subagent_api_key:
+    description: 'API key for subagent provider (required if subagent_provider is different from main provider). Use GitHub secrets.'
+    required: false
+    default: ''
+
 outputs:
   result:
     description: 'Output from the ariadne agent'

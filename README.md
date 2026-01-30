@@ -102,7 +102,16 @@ Execute tasks using recursive sub-agent spawning. Sub-agents can spawn their own
 ```bash
 ariadne --provider deepseek rlm "analyze all Go files and summarize each"
 ariadne --provider openai rlm "list files and explain what each does" --depth 5
+
+# Use different provider for sub-agents
+ariadne --provider openai rlm --subagent-provider deepseek "analyze codebase"
 ```
+
+| Flag | Description | Default |
+|------|-------------|---------|
+| `--depth` | Maximum recursion depth for sub-agents | 3 |
+| `--timeout` | Timeout in seconds per sub-agent | 120 |
+| `--subagent-provider` | LLM provider for sub-agents | same as main |
 
 ## Available Tools
 
@@ -146,6 +155,9 @@ ariadne -p deepseek react-run "analyze all Go files" --verbose
 
 # Recursive analysis with sub-agents
 ariadne -p deepseek rlm "analyze the tools/ directory" --depth 3
+
+# Mixed providers: OpenAI for orchestration, DeepSeek for sub-tasks
+ariadne -p openai rlm --subagent-provider deepseek "analyze codebase" --depth 3
 
 # Interactive session with persistence
 ariadne -p anthropic react-chat --session coding
