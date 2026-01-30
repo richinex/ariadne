@@ -41,32 +41,16 @@ jobs:
             NOTES=$(git log $PREV_TAG..HEAD --pretty=format:"- %s" --no-merges)
           fi
 
-          # Write release notes (secrets placeholder uses literal string to avoid expansion)
-          cat > release-notes.md << 'NOTES_EOF'
+          # Write release notes - avoid secrets syntax entirely
+          cat > release-notes.md << NOTES_EOF
           ## What's Changed
 
-          NOTES_EOF
-
-          echo "${NOTES}" >> release-notes.md
-          echo "" >> release-notes.md
-
-          cat >> release-notes.md << 'USAGE_EOF'
+          ${NOTES}
 
           ## Usage
 
-          ```yaml
-          - uses: richinex/ariadne@VERSION_PLACEHOLDER
-            with:
-              task: "Analyze this codebase"
-              provider: openai
-              api_key: ${{ secrets.OPENAI_API_KEY }}
-          ```
-
-          See [README-ACTION.md](README-ACTION.md) for full documentation.
-          USAGE_EOF
-
-          # Replace version placeholder
-          sed -i "s/VERSION_PLACEHOLDER/${VERSION}/g" release-notes.md
+          See [README-ACTION.md](README-ACTION.md) for installation and usage examples.
+          NOTES_EOF
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
