@@ -1,7 +1,8 @@
-# Ariadne
+# Ariadne (Experimental)
 
 Ariadne is a CLI tool and GitHub Action for running LLM agents with bounded context.
 It provides two execution patterns: ReAct for single-agent tasks and RLM for recursive sub-agent spawning.
+It is an experimental project exploring ways to incorporate LLMs into a Github actions workflow.
 
 ## Quick Start
 
