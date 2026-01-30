@@ -78,6 +78,8 @@ fi
 CMD_ARGS+=("$TASK")
 
 # Output the command for debugging (verbose mode)
+# Safe to echo command args - API keys are exported as environment variables,
+# not passed as command-line arguments, so they won't appear in this output
 if [ "$VERBOSE" = "true" ]; then
     echo "Running: ariadne ${CMD_ARGS[*]}"
 fi

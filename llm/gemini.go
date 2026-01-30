@@ -22,9 +22,11 @@ type GeminiProvider struct {
 	model       string
 	maxTokens   int32
 	temperature float32
+	initErr     error // Stores client initialization error for deferred reporting
 }
 
 // NewGeminiProvider creates a new Gemini provider.
+// If client initialization fails, the error is stored and returned on first use.
 func NewGeminiProvider(apiKey, model string, maxTokens uint32, temperature float32) *GeminiProvider {
 	ctx := context.Background()
 	client, err := genai.NewClient(ctx, &genai.ClientConfig{
@@ -32,12 +34,13 @@ func NewGeminiProvider(apiKey, model string, maxTokens uint32, temperature float
 		Backend: genai.BackendGeminiAPI,
 	})
 	if err != nil {
-		// Return provider that will fail on use - matches existing pattern
+		// Store initialization error to return on first use - preserves constructor signature
 		return &GeminiProvider{
 			client:      nil,
 			model:       model,
 			maxTokens:   int32(maxTokens),
 			temperature: temperature,
+			initErr:     fmt.Errorf("failed to initialize Gemini client: %w", err),
 		}
 	}
 
@@ -46,6 +49,7 @@ func NewGeminiProvider(apiKey, model string, maxTokens uint32, temperature float
 		model:       model,
 		maxTokens:   int32(maxTokens),
 		temperature: temperature,
+		initErr:     nil,
 	}
 }
 
@@ -66,6 +70,9 @@ func (p *GeminiProvider) Chat(ctx context.Context, messages []ChatMessage) (LLMR
 
 // ChatWithFormat sends a chat completion request with optional response format.
 func (p *GeminiProvider) ChatWithFormat(ctx context.Context, messages []ChatMessage, _ *ResponseFormat) (LLMResponse, error) {
+	if p.initErr != nil {
+		return LLMResponse{}, p.initErr
+	}
 	if p.client == nil {
 		return LLMResponse{}, fmt.Errorf("gemini client not initialized")
 	}
@@ -105,6 +112,9 @@ func (p *GeminiProvider) ChatWithFormat(ctx context.Context, messages []ChatMess
 
 // ChatWithTools sends a chat completion request with tool definitions.
 func (p *GeminiProvider) ChatWithTools(ctx context.Context, messages []ChatMessage, tools []ToolDefinition) (LLMResponse, error) {
+	if p.initErr != nil {
+		return LLMResponse{}, p.initErr
+	}
 	if p.client == nil {
 		return LLMResponse{}, fmt.Errorf("gemini client not initialized")
 	}
@@ -160,6 +170,9 @@ func (p *GeminiProvider) ChatWithTools(ctx context.Context, messages []ChatMessa
 
 // StreamChat streams a chat completion.
 func (p *GeminiProvider) StreamChat(ctx context.Context, messages []ChatMessage, chunks chan<- string) (*TokenUsage, error) {
+	if p.initErr != nil {
+		return nil, p.initErr
+	}
 	if p.client == nil {
 		return nil, fmt.Errorf("gemini client not initialized")
 	}
