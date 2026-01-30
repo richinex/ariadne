@@ -47,7 +47,8 @@ jobs:
           max_iter: 20
           verbose: false
 
-      - name: Save review to file
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
         run: |
           cat > review.md << 'REVIEWEOF'
           ## AI Code Review 🤖
@@ -57,9 +58,6 @@ jobs:
           ---
           *Powered by [Ariadne](https://github.com/richinex/ariadne)*
           REVIEWEOF
-
-      - name: Comment on PR
-        run: |
           gh pr comment ${{ github.event.pull_request.number }} --body-file review.md
         env:
           GH_TOKEN: ${{ github.token }}
