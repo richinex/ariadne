@@ -30,31 +30,30 @@ jobs:
       - name: Generate release notes
         id: notes
         run: |
+          VERSION=${{ steps.version.outputs.version }}
+
           # Get previous tag
           PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
 
           if [ -z "$PREV_TAG" ]; then
-            # First release
-            NOTES="Initial release of Ariadne - Navigate codebases with AI like following a thread through a labyrinth"
+            NOTES="Initial release of Ariadne"
           else
-            # Generate notes from commits
             NOTES=$(git log $PREV_TAG..HEAD --pretty=format:"- %s" --no-merges)
           fi
 
-          # Save to file for multiline handling
-          cat > release-notes.md << 'EOF'
+          cat > release-notes.md << EOF
           ## What's Changed
 
-          $NOTES
+          ${NOTES}
 
           ## Usage
 
           \`\`\`yaml
-          - uses: richinex/ariadne-action@${{ steps.version.outputs.version }}
+          - uses: richinex/ariadne@${VERSION}
             with:
-              task: "Navigate your codebase and analyze complexity"
+              task: "Analyze this codebase"
               provider: openai
-              api_key: \$\{{ secrets.OPENAI_API_KEY }}
+              api_key: \${{ secrets.OPENAI_API_KEY }}
           \`\`\`
 
           See [README-ACTION.md](README-ACTION.md) for full documentation.
@@ -78,6 +77,6 @@ jobs:
 
       - name: Announce release
         run: |
-          echo "✅ Released Ariadne ${{ steps.version.outputs.version }}"
-          echo "🧵 Action available at: richinex/ariadne-action@${{ steps.version.outputs.version }}"
-          echo "🔖 Major tag updated: richinex/ariadne-action@${{ steps.version.outputs.major }}"
+          echo "Released Ariadne ${{ steps.version.outputs.version }}"
+          echo "Action available at: richinex/ariadne@${{ steps.version.outputs.version }}"
+          echo "Major tag updated: richinex/ariadne@${{ steps.version.outputs.major }}"
